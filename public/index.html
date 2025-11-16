@@ -113,8 +113,8 @@
 <div class="top-bar">
 <a href="#" class="logo">먹었약</a>
 <div class="login-section">
-<a href="#" class="login-btn">로그인</a>
-<a href="#" class="signup-btn">회원가입</a>
+<a href="/login" class="login-btn">로그인</a>
+<a href="/register" class="signup-btn">회원가입</a>
 </div>
 </div>
 <div class="hero-content">
@@ -165,8 +165,8 @@
 <div class="feature-icon">
 <svg viewBox="0 0 24 24" fill="white"><path d="M13 1.07V9h7c0-4.08-3.05-7.44-7-7.93zM4 15c0 4.42 3.58 8 8 8s8-3.58 8-8v-4H4v4zm7-13.93C7.05 1.56 4 4.92 4 9h7V1.07z"/></svg>
 </div>
-<div class="feature-title">마우스 트래킹</div>
-<div class="feature-desc">실시간 데이터 흐름을 표현하는 파티클 생성</div>
+<div class="feature-title">클릭 인터랙션</div>
+<div class="feature-desc">클릭할 때마다 색상이 변하는 생동감 있는 구체</div>
 </div>
 <div class="feature-item">
 <div class="feature-icon">
@@ -179,15 +179,15 @@
 <div class="feature-icon">
 <svg viewBox="0 0 24 24" fill="white"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
 </div>
-<div class="feature-title">파티클 효과</div>
+<div class="feature-title">3D 변형 효과</div>
 <div class="feature-desc">물리 기반 알고리즘으로 자연스러운 움직임</div>
 </div>
 <div class="feature-item">
 <div class="feature-icon">
 <svg viewBox="0 0 24 24" fill="white"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
 </div>
-<div class="feature-title">녹색 테마</div>
-<div class="feature-desc">생명과 건강을 상징하는 색상 그라데이션</div>
+<div class="feature-title">다채로운 팔레트</div>
+<div class="feature-desc">생명과 건강을 상징하는 10가지 색상 조합</div>
 </div>
 </div>
 </div>
@@ -466,171 +466,266 @@ function like(i){posts[i].likes++;const b=document.querySelector(`[data-index="$
 function tC(i){document.getElementById(`c-${i}`).classList.toggle('active')}
 function aC(i){const inp=document.getElementById(`ci-${i}`);if(!inp.value.trim())return;const ns=['김댓글','이리플','박코멘트','최반응','정소통','강메시지'];posts[i].comments.push({author:ns[Math.floor(Math.random()*ns.length)],text:inp.value});document.getElementById(`cl-${i}`).innerHTML=rC(posts[i].comments,i);document.querySelector(`[data-index="${i}"] .comment-btn span:last-child`).textContent=`댓글 ${posts[i].comments.length}`;inp.value=''}
 document.addEventListener('keypress',e=>{if(e.target.classList.contains('comment-input')&&e.key==='Enter'){aC(parseInt(e.target.id.split('-')[1]))}});
-document.querySelectorAll('.tab').forEach(t=>{t.addEventListener('click',function(){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));this.classList.add('active');document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));document.getElementById(`${this.dataset.tab}-content`).classList.add('active');if(this.dataset.tab==='info'){setTimeout(()=>{initScrollAnimations()},100)}})});
-document.querySelectorAll('.circle-btn').forEach(b=>{b.addEventListener('click',function(){this.style.background='rgba(255,255,255,0.2)';setTimeout(()=>{this.style.background='rgba(255,255,255,0.05)'},200)})});
 
-const canvas = document.getElementById('interactiveCanvas');
-if(canvas) {
-    // Three.js 씬 설정
-    const scene = new THREE.Scene();
-    
-    const camera = new THREE.PerspectiveCamera(75, canvas.parentElement.offsetWidth / canvas.parentElement.offsetHeight, 0.1, 1000);
-    camera.position.z = 2.6;
-    
-    const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
-    renderer.setSize(canvas.parentElement.offsetWidth, canvas.parentElement.offsetHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
+// Three.js 전역 변수
+let threeScene, threeCamera, threeRenderer, threeSphere, threeFaceMesh, threeGeometry;
+let threeOriginalPositions, threePulseTime = 0, threeIsPulsing = false, threeRotation = 0;
+let threeCurrentPaletteIndex = 0;
+let threeAnimationFrame;
 
-    const geometry = new THREE.SphereGeometry(1, 190, 190);
+const threeColorPalettes = [
+    ['#0A3B0A', '#D4AF37', '#8B4513', '#F0E6D2', '#3D2B1F'],
+    ['#004225', '#FADADD', '#B0B0B0', '#333333'],
+    ['#2F4F2F', '#E07A5F', '#F4F1DE', '#6B4F4F', '#F7F3E3'],
+    ['#013220', '#000080', '#4A90E2', '#E1E5EA'],
+    ['#228B22', '#800020', '#FFDB58', '#FDF5E6', '#5C4033'],
+    ['#193A1F', '#E6E6FA', '#483D8B', '#C0C0C0'],
+    ['#005000', '#CC5500', '#E1AD01', '#FFF8DC', '#3E2723'],
+    ['#004B49', '#AFE1AF', '#F4A460', '#87CEEB'],
+    ['#0A3B0A', '#2E8B57', '#8FBC8F', '#F0FFF0', '#474747'],
+    ['#004d00', '#0F52BA', '#E0115F', '#FFD700']
+];
+
+function initThreeJS() {
+    const canvas = document.getElementById('interactiveCanvas');
+    if (!canvas) return;
+
+    const container = canvas.parentElement;
     
-    const vertexCount = geometry.attributes.position.count;
+    // 씬 생성
+    threeScene = new THREE.Scene();
+    
+    // 카메라 생성
+    threeCamera = new THREE.PerspectiveCamera(75, container.offsetWidth / container.offsetHeight, 0.1, 1000);
+    threeCamera.position.z = 2.6;
+    
+    // 렌더러 생성
+    threeRenderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+    threeRenderer.setSize(container.offsetWidth, container.offsetHeight);
+    threeRenderer.setPixelRatio(window.devicePixelRatio);
+
+    // 기하학 생성
+    threeGeometry = new THREE.SphereGeometry(1, 190, 190);
+    
+    const vertexCount = threeGeometry.attributes.position.count;
     const colors = new Float32Array(vertexCount * 3);
-    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    threeGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
     
+    // 와이어프레임 메시
     const wireframeMaterial = new THREE.MeshBasicMaterial({ 
         wireframe: true,
         vertexColors: true
     });
-    const sphere = new THREE.Mesh(geometry, wireframeMaterial);
-    scene.add(sphere);
+    threeSphere = new THREE.Mesh(threeGeometry, wireframeMaterial);
+    threeScene.add(threeSphere);
 
+    // 면 메시
     const faceMaterial = new THREE.MeshBasicMaterial({ 
         color: 0x888888,
         side: THREE.DoubleSide,
         transparent: true,
         opacity: 0.18
     });
-    const faceMesh = new THREE.Mesh(geometry, faceMaterial);
-    scene.add(faceMesh);
+    threeFaceMesh = new THREE.Mesh(threeGeometry, faceMaterial);
+    threeScene.add(threeFaceMesh);
 
-    const originalPositions = geometry.attributes.position.array.slice();
+    // 원본 위치 저장
+    threeOriginalPositions = threeGeometry.attributes.position.array.slice();
     
-    let pulseTime = 0;
-    let isPulsing = false;
-    let rotation = 0;
-    let currentPaletteIndex = -1;
-
-    const colorPalettes = [
-        ['#0A3B0A', '#D4AF37', '#8B4513', '#F0E6D2', '#3D2B1F'],
-        ['#004225', '#FADADD', '#B0B0B0', '#333333'],
-        ['#2F4F2F', '#E07A5F', '#F4F1DE', '#6B4F4F', '#F7F3E3'],
-        ['#013220', '#000080', '#4A90E2', '#E1E5EA'],
-        ['#228B22', '#800020', '#FFDB58', '#FDF5E6', '#5C4033'],
-        ['#193A1F', '#E6E6FA', '#483D8B', '#C0C0C0'],
-        ['#005000', '#CC5500', '#E1AD01', '#FFF8DC', '#3E2723'],
-        ['#004B49', '#AFE1AF', '#F4A460', '#87CEEB'],
-        ['#0A3B0A', '#2E8B57', '#8FBC8F', '#F0FFF0', '#474747'],
-        ['#004d00', '#0F52BA', '#E0115F', '#FFD700']
-    ];
-
-    function applyPaletteColors(paletteIndex) {
-        const palette = colorPalettes[paletteIndex];
-        const colorAttribute = geometry.attributes.color;
-        const color = new THREE.Color();
-        
-        for (let i = 0; i < vertexCount; i++) {
-            const colorHex = palette[i % palette.length];
-            color.set(colorHex);
-            colorAttribute.setXYZ(i, color.r, color.g, color.b);
-        }
-        colorAttribute.needsUpdate = true;
-    }
-
-    function triggerPulse() {
-        if (!isPulsing) {
-            isPulsing = true;
-            pulseTime = 0;
-            currentPaletteIndex = (currentPaletteIndex + 1) % colorPalettes.length;
-            applyPaletteColors(currentPaletteIndex);
-        }
-    }
-
+    // 초기 색상 적용
     applyPaletteColors(0);
-    currentPaletteIndex = 0;
-
+    
+    // 이벤트 리스너
     canvas.addEventListener('click', triggerPulse);
     canvas.addEventListener('touchstart', (e) => {
         e.preventDefault();
         triggerPulse();
     });
 
-    function animate() {
-        requestAnimationFrame(animate);
-
-        rotation += 0.0022;
-        sphere.rotation.y = rotation;
-        sphere.rotation.x = rotation * 0.8;
-        faceMesh.rotation.copy(sphere.rotation);
-
-        const positions = geometry.attributes.position.array;
-        const time = Date.now() * 0.0005;
-
-        if (isPulsing) {
-            pulseTime += 0.02;
-            if (pulseTime > 2) {
-                isPulsing = false;
-                pulseTime = 0;
-            }
-        }
-
-        for (let i = 0; i < positions.length; i += 3) {
-            const x = originalPositions[i];
-            const y = originalPositions[i + 1];
-            const z = originalPositions[i + 2];
-
-            const vertex = new THREE.Vector3(x, y, z);
-
-            const turb1 = Math.sin(x * 5 + time * 3) * Math.cos(y * 4 - time * 2);
-            const turb2 = Math.sin(z * 6 + time * 1.5) * Math.cos(x * 3 + time);
-            const turbulence = (turb1 + turb2) * 0.1;
-
-            const angle = Math.atan2(y, x) + time * 0.5;
-            const spiral = Math.sin(angle * 5 + z * 10) * 0.08;
-
-            let implosionEffect = 0;
-            let curve = 0;
-            if (isPulsing) {
-                const t = pulseTime / 2;
-                
-                if (t < 0.2) {
-                    curve = -Math.pow(t / 0.2, 2) * 0.5;
-                } else if (t < 0.5) {
-                    const releaseT = (t - 0.2) / 0.3;
-                    curve = -0.5 * (1 - releaseT) + Math.sin(releaseT * Math.PI * 2) * 0.15 * (1 - releaseT);
-                } else {
-                    const dampT = (t - 0.5) / 0.5;
-                    curve = Math.sin(dampT * Math.PI * 3) * 0.08 * Math.exp(-dampT * 4);
-                }
-                
-                implosionEffect = curve;
-            }
-
-            const scale = 1 + turbulence + spiral + implosionEffect;
-            
-            positions[i] = x * scale;
-            positions[i + 1] = y * scale;
-            positions[i + 2] = z * scale;
-        }
-
-        geometry.attributes.position.needsUpdate = true;
-        geometry.computeVertexNormals();
-
-        renderer.render(scene, camera);
-    }
-
-    animate();
-
-    window.addEventListener('resize', () => {
-        camera.aspect = canvas.parentElement.offsetWidth / canvas.parentElement.offsetHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(canvas.parentElement.offsetWidth, canvas.parentElement.offsetHeight);
-    });
+    // 애니메이션 시작
+    animateThree();
 }
 
-function initScrollAnimations(){const obs=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('animated')}})},{threshold:0.1,rootMargin:'0px 0px -50px 0px'});document.querySelectorAll('.animate-on-scroll,.slide-in-left,.slide-in-right,.scale-in,.rotate-in,.flip-in').forEach(el=>obs.observe(el))}
+function applyPaletteColors(paletteIndex) {
+    if (!threeGeometry) return;
+    
+    const palette = threeColorPalettes[paletteIndex];
+    const colorAttribute = threeGeometry.attributes.color;
+    const color = new THREE.Color();
+    const vertexCount = threeGeometry.attributes.position.count;
+    
+    for (let i = 0; i < vertexCount; i++) {
+        const colorHex = palette[i % palette.length];
+        color.set(colorHex);
+        colorAttribute.setXYZ(i, color.r, color.g, color.b);
+    }
+    colorAttribute.needsUpdate = true;
+}
 
+function triggerPulse() {
+    if (!threeIsPulsing) {
+        threeIsPulsing = true;
+        threePulseTime = 0;
+        threeCurrentPaletteIndex = (threeCurrentPaletteIndex + 1) % threeColorPalettes.length;
+        applyPaletteColors(threeCurrentPaletteIndex);
+    }
+}
+
+function animateThree() {
+    if (!threeRenderer || !threeScene || !threeCamera) return;
+    
+    threeAnimationFrame = requestAnimationFrame(animateThree);
+
+    threeRotation += 0.0022;
+    threeSphere.rotation.y = threeRotation;
+    threeSphere.rotation.x = threeRotation * 0.8;
+    threeFaceMesh.rotation.copy(threeSphere.rotation);
+
+    const positions = threeGeometry.attributes.position.array;
+    const time = Date.now() * 0.0005;
+
+    if (threeIsPulsing) {
+        threePulseTime += 0.02;
+        if (threePulseTime > 2) {
+            threeIsPulsing = false;
+            threePulseTime = 0;
+        }
+    }
+
+    for (let i = 0; i < positions.length; i += 3) {
+        const x = threeOriginalPositions[i];
+        const y = threeOriginalPositions[i + 1];
+        const z = threeOriginalPositions[i + 2];
+
+        const turb1 = Math.sin(x * 5 + time * 3) * Math.cos(y * 4 - time * 2);
+        const turb2 = Math.sin(z * 6 + time * 1.5) * Math.cos(x * 3 + time);
+        const turbulence = (turb1 + turb2) * 0.1;
+
+        const angle = Math.atan2(y, x) + time * 0.5;
+        const spiral = Math.sin(angle * 5 + z * 10) * 0.08;
+
+        let implosionEffect = 0;
+        let curve = 0;
+        if (threeIsPulsing) {
+            const t = threePulseTime / 2;
+            
+            if (t < 0.2) {
+                curve = -Math.pow(t / 0.2, 2) * 0.5;
+            } else if (t < 0.5) {
+                const releaseT = (t - 0.2) / 0.3;
+                curve = -0.5 * (1 - releaseT) + Math.sin(releaseT * Math.PI * 2) * 0.15 * (1 - releaseT);
+            } else {
+                const dampT = (t - 0.5) / 0.5;
+                curve = Math.sin(dampT * Math.PI * 3) * 0.08 * Math.exp(-dampT * 4);
+            }
+            
+            implosionEffect = curve;
+        }
+
+        const scale = 1 + turbulence + spiral + implosionEffect;
+        
+        positions[i] = x * scale;
+        positions[i + 1] = y * scale;
+        positions[i + 2] = z * scale;
+    }
+
+    threeGeometry.attributes.position.needsUpdate = true;
+    threeGeometry.computeVertexNormals();
+
+    threeRenderer.render(threeScene, threeCamera);
+}
+
+function resizeThreeJS() {
+    if (!threeRenderer || !threeCamera) return;
+    
+    const canvas = document.getElementById('interactiveCanvas');
+    if (!canvas || !canvas.parentElement) return;
+    
+    const container = canvas.parentElement;
+    const width = container.offsetWidth;
+    const height = container.offsetHeight;
+    
+    threeCamera.aspect = width / height;
+    threeCamera.updateProjectionMatrix();
+    threeRenderer.setSize(width, height);
+}
+
+function stopThreeJS() {
+    if (threeAnimationFrame) {
+        cancelAnimationFrame(threeAnimationFrame);
+        threeAnimationFrame = null;
+    }
+}
+
+// 탭 전환 이벤트
+document.querySelectorAll('.tab').forEach(t=>{
+    t.addEventListener('click',function(){
+        document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+        this.classList.add('active');
+        document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+        document.getElementById(`${this.dataset.tab}-content`).classList.add('active');
+        
+        // 인터랙티브 탭 활성화 시
+        if(this.dataset.tab==='interactive'){
+            setTimeout(()=>{
+                // Three.js가 아직 초기화되지 않았다면 초기화
+                if(!threeRenderer) {
+                    initThreeJS();
+                } else {
+                    // 이미 초기화되었다면 리사이즈만
+                    resizeThreeJS();
+                    // 애니메이션이 중지되어 있다면 재시작
+                    if(!threeAnimationFrame) {
+                        animateThree();
+                    }
+                }
+                initScrollAnimations();
+            }, 100);
+        } else {
+            // 다른 탭으로 전환 시 애니메이션 중지 (성능 최적화)
+            // stopThreeJS();
+        }
+        
+        if(this.dataset.tab==='info'){
+            setTimeout(()=>{
+                initScrollAnimations()
+            },100)
+        }
+    })
+});
+
+// 윈도우 리사이즈 이벤트
+window.addEventListener('resize', () => {
+    resizeThreeJS();
+});
+
+document.querySelectorAll('.circle-btn').forEach(b=>{
+    b.addEventListener('click',function(){
+        this.style.background='rgba(255,255,255,0.2)';
+        setTimeout(()=>{
+            this.style.background='rgba(255,255,255,0.05)';
+        },200);
+    });
+});
+
+function initScrollAnimations(){
+    const obs=new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+            if(entry.isIntersecting){
+                entry.target.classList.add('animated')
+            }
+        })
+    },{threshold:0.1,rootMargin:'0px 0px -50px 0px'});
+    document.querySelectorAll('.animate-on-scroll,.slide-in-left,.slide-in-right,.scale-in,.rotate-in,.flip-in').forEach(el=>obs.observe(el))
+}
+
+// 페이지 로드 시 실행
 rF();
-setTimeout(()=>{if(document.querySelector('.tab[data-tab="info"]').classList.contains('active')){initScrollAnimations()}},500);
+setTimeout(()=>{
+    if(document.querySelector('.tab[data-tab="info"]').classList.contains('active')){
+        initScrollAnimations()
+    }
+},500);
 </script>
 </body>
 </html>
