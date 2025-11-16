@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Î°úÍ∑∏??- ?§Îßà???ΩÌÜµ</title>
+    <link rel="stylesheet" href="/css/Style.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .login-header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .login-header p {
+            color: var(--text-light);
+            font-size: 18px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-control-icon {
+            position: relative;
+        }
+        
+        .form-control-icon input {
+            padding-left: 50px;
+        }
+        
+        .form-control-icon .icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+        }
+        
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+        }
+        
+        .checkbox-label input {
+            margin-right: 8px;
+            width: 18px;
+            height: 18px;
+        }
+        
+        .forgot-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 16px;
+        }
+        
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+        
+        .login-button {
+            width: 100%;
+            padding: 18px;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .divider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 1px;
+            background: var(--border-color);
+        }
+        
+        .divider span {
+            background: white;
+            padding: 0 15px;
+            position: relative;
+            color: var(--text-light);
+        }
+        
+        .register-section {
+            text-align: center;
+            padding-top: 20px;
+        }
+        
+        .register-section p {
+            font-size: 16px;
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+        
+        .demo-info {
+            background: #f0f7ff;
+            border: 1px solid #2196f3;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        .demo-info h4 {
+            color: #2196f3;
+            margin-bottom: 10px;
+        }
+        
+        .demo-info p {
+            font-size: 14px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>?íä ?§Îßà???ΩÌÜµ</h1>
+            <p>Í±¥Í∞ï??Î≥µÏö© ?µÍ????ÑÌïú ?ÑÏö∞ÎØ?/p>
+        </div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label class="form-label" for="username">?ÑÏù¥??/label>
+                <div class="form-control-icon">
+                    <span class="icon">?ë§</span>
+                    <input type="text" class="form-control form-control-large" id="username" 
+                           placeholder="?ÑÏù¥?îÎ? ?ÖÎ†•?òÏÑ∏?? required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="password">ÎπÑÎ?Î≤àÌò∏</label>
+                <div class="form-control-icon">
+                    <span class="icon">?îí</span>
+                    <input type="password" class="form-control form-control-large" id="password" 
+                           placeholder="ÎπÑÎ?Î≤àÌò∏Î•??ÖÎ†•?òÏÑ∏?? required>
+                </div>
+            </div>
+            
+            <div class="remember-forgot">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="rememberMe">
+                    Î°úÍ∑∏???ÅÌÉú ?†Ï?
+                </label>
+                <a href="#" class="forgot-link">ÎπÑÎ?Î≤àÌò∏ Ï∞æÍ∏∞</a>
+            </div>
+            
+            <button type="submit" class="btn btn-primary login-button">
+                Î°úÍ∑∏??
+            </button>
+        </form>
+        
+        <div class="divider">
+            <span>?êÎäî</span>
+        </div>
+        
+        <div class="register-section">
+            <p>?ÑÏßÅ Í≥ÑÏ†ï???ÜÏúº?†Í???</p>
+            <a href="/register" class="btn btn-outline" style="width: 100%;">
+                ?åÏõêÍ∞Ä??
+            </a>
+        </div>
+        
+        <div class="demo-info">
+            <h4>?éØ Ï≤¥Ìóò Í≥ÑÏ†ï</h4>
+            <p><strong>?ÑÏù¥??</strong> test_user</p>
+            <p><strong>ÎπÑÎ?Î≤àÌò∏:</strong> test1234</p>
+            <p>* ?åÏä§?∏Ïö© Í≥ÑÏ†ï?ºÎ°ú ?úÎπÑ?§Î? Ï≤¥Ìóò?¥Î≥¥?∏Ïöî</p>
+        </div>
+    </div>
+    
+    <script src="/js/common.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // ?†ÌÅ∞ ?Ä??
+                    if (rememberMe) {
+                        localStorage.setItem('token', data.token);
+                    } else {
+                        sessionStorage.setItem('token', data.token);
+                    }
+                    
+                    // ?¨Ïö©???ïÎ≥¥ ?Ä??
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    utils.showAlert('Î°úÍ∑∏???±Í≥µ!', 'success');
+                    
+                    // ?Ä?úÎ≥¥?úÎ°ú ?¥Îèô
+                    setTimeout(() => {
+                        window.location.href = '/dashboard';
+                    }, 1000);
+                } else {
+                    utils.showAlert(data.message || 'Î°úÍ∑∏?∏Ïóê ?§Ìå®?àÏäµ?àÎã§.', 'error');
+                }
+            } catch (error) {
+                console.error('Î°úÍ∑∏???§Î•ò:', error);
+                utils.showAlert('Î°úÍ∑∏??Ï≤òÎ¶¨ Ï§??§Î•òÍ∞Ä Î∞úÏÉù?àÏäµ?àÎã§.', 'error');
+            }
+        });
+        
+        // ?¥Î? Î°úÍ∑∏?∏Îêú Í≤ΩÏö∞ ?Ä?úÎ≥¥?úÎ°ú Î¶¨Îã§?¥Î†â??
+        if (utils.TokenManager.isLoggedIn()) {
+            window.location.href = '/dashboard';
+        }
+    </script>
+</body>
+</html>

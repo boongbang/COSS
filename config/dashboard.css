@@ -1,0 +1,446 @@
+/* 대시보드 레이아웃 */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+    background: var(--bg-light);
+}
+
+/* 사이드바 */
+.sidebar {
+    width: 280px;
+    background: var(--bg-white);
+    box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    z-index: 100;
+}
+
+.sidebar-header {
+    padding: 30px 20px;
+    border-bottom: 1px solid var(--border-color);
+    text-align: center;
+}
+
+.sidebar-header h2 {
+    color: var(--primary-color);
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.user-name {
+    color: var(--text-light);
+    font-size: 16px;
+}
+
+.sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 0;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    color: var(--text-dark);
+    text-decoration: none;
+    transition: all 0.3s;
+    font-size: 18px;
+    margin: 5px 10px;
+    border-radius: 10px;
+}
+
+.nav-item:hover {
+    background: var(--bg-light);
+    transform: translateX(5px);
+}
+
+.nav-item.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.nav-item .icon {
+    font-size: 24px;
+    margin-right: 15px;
+    width: 30px;
+    text-align: center;
+}
+
+.sidebar-footer {
+    padding: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+/* 메인 콘텐츠 */
+.main-content {
+    flex: 1;
+    margin-left: 280px;
+    display: flex;
+    flex-direction: column;
+}
+
+.content-header {
+    background: var(--bg-white);
+    padding: 20px 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.content-header h1 {
+    font-size: 32px;
+    color: var(--text-dark);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.btn-notification {
+    position: relative;
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.btn-notification .badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: var(--danger-color);
+    color: white;
+    border-radius: 10px;
+    padding: 2px 6px;
+    font-size: 12px;
+    min-width: 20px;
+    text-align: center;
+}
+
+.current-time {
+    font-size: 18px;
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+#pageContent {
+    padding: 30px;
+}
+
+/* 페이지 섹션 */
+.page-section {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.section-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+}
+
+/* 오늘의 복용 현황 */
+.today-status {
+    margin-bottom: 30px;
+}
+
+.stat-card.success {
+    border-left: 4px solid var(--success-color);
+}
+
+.stat-card.warning {
+    border-left: 4px solid var(--warning-color);
+}
+
+.stat-card.danger {
+    border-left: 4px solid var(--danger-color);
+}
+
+/* 다음 복용 카드 */
+.next-dose-card {
+    background: linear-gradient(135deg, var(--primary-color), #45a049);
+    color: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.next-dose-card h3 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.next-time {
+    font-size: 48px;
+    font-weight: 700;
+    margin: 20px 0;
+}
+
+.time-until {
+    font-size: 20px;
+    opacity: 0.9;
+}
+
+.next-dose-empty {
+    padding: 40px;
+    text-align: center;
+    color: var(--text-light);
+    font-size: 20px;
+}
+
+/* 약통 상태 */
+.compartment.has-medicine {
+    background: var(--primary-color);
+    color: white;
+}
+
+.compartment.empty {
+    opacity: 0.6;
+}
+
+/* 일정 리스트 */
+.schedule-item {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background: var(--bg-white);
+    border-radius: 10px;
+    margin-bottom: 15px;
+    border: 2px solid var(--border-color);
+}
+
+.schedule-item.taken {
+    background: #e8f5e9;
+    border-color: var(--success-color);
+}
+
+.schedule-item.missed {
+    background: #ffebee;
+    border-color: var(--danger-color);
+}
+
+.schedule-time {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--primary-color);
+    min-width: 100px;
+}
+
+.schedule-info {
+    flex: 1;
+    margin: 0 20px;
+}
+
+.schedule-info h4 {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.schedule-status {
+    margin-right: 20px;
+}
+
+/* 약품 리스트 */
+.medicine-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: var(--bg-white);
+    border-radius: 10px;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+}
+
+.medicine-info h4 {
+    font-size: 22px;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+
+.medicine-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* 건강 노트 카드 */
+.health-note-card {
+    background: var(--bg-white);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: var(--shadow);
+}
+
+.note-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.note-header h4 {
+    font-size: 20px;
+    color: var(--text-dark);
+}
+
+.mood-badge {
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 16px;
+}
+
+.mood-badge.very_good {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.mood-badge.good {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.mood-badge.normal {
+    background: #fff3e0;
+    color: #ef6c00;
+}
+
+.mood-badge.bad {
+    background: #fce4ec;
+    color: #c2185b;
+}
+
+.mood-badge.very_bad {
+    background: #ffebee;
+    color: #c62828;
+}
+
+/* 필터 섹션 */
+.filter-section {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 20px;
+    background: var(--bg-light);
+    border-radius: 10px;
+}
+
+.filter-section input {
+    max-width: 200px;
+}
+
+/* 차트 섹션 */
+.chart-section {
+    min-height: 400px;
+}
+
+canvas {
+    max-height: 300px;
+}
+
+/* 모달 액션 */
+.modal-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+/* 빈 메시지 */
+.empty-message {
+    text-align: center;
+    color: var(--text-light);
+    font-size: 18px;
+    padding: 40px;
+}
+
+/* 시간 슬롯 */
+.time-slot {
+    margin-bottom: 10px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 240px;
+    }
+    
+    .main-content {
+        margin-left: 240px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s;
+    }
+    
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    
+    .main-content {
+        margin-left: 0;
+    }
+    
+    .content-header h1 {
+        font-size: 24px;
+    }
+    
+    .schedule-item {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .medicine-item {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .medicine-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
+/* 로딩 애니메이션 */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: .5;
+    }
+}

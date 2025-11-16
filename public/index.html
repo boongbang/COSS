@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스마트 약통 - 홈</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .hero-section {
+            padding: 60px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+        .hero-title {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        .hero-description {
+            font-size: 24px;
+            margin-bottom: 40px;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+        .features-section {
+            padding: 80px 0;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 50px;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        .feature-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        .main-footer {
+            background: #333;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            margin-top: 80px;
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">
+                <h1>💊 스마트 약통</h1>
+            </div>
+            <nav class="main-nav">
+                <a href="/login">로그인</a>
+                <a href="/register">회원가입</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero-section">
+        <div class="container">
+            <h2 class="hero-title">약 복용을 잊지 마세요!</h2>
+            <p class="hero-description">
+                IoT 센서와 실시간 알림으로<br>
+                정확한 시간에 약을 복용할 수 있도록 도와드립니다
+            </p>
+            <div class="hero-buttons">
+                <a href="/register" class="btn btn-large" style="background: white; color: var(--primary-color);">
+                    시작하기
+                </a>
+                <a href="#features" class="btn btn-outline btn-large" style="border-color: white; color: white;">
+                    더 알아보기
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="features-section">
+        <div class="container">
+            <h2 class="section-title">주요 기능</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📡</div>
+                    <h3>IoT 센서 연동</h3>
+                    <p>적외선 센서로 약 복용을 자동 감지하고 기록합니다</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⏰</div>
+                    <h3>실시간 알림</h3>
+                    <p>복용 시간에 맞춰 알림을 보내드립니다</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>복용 통계</h3>
+                    <p>복용률과 패턴을 분석하여 건강 관리에 도움을 드립니다</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👨‍👩‍👧</div>
+                    <h3>보호자 연동</h3>
+                    <p>가족이나 의료진과 복용 정보를 공유할 수 있습니다</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3>건강 일지</h3>
+                    <p>혈압, 혈당 등 건강 정보를 기록하고 추이를 확인합니다</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔔</div>
+                    <h3>맞춤 알림</h3>
+                    <p>개인별 복용 시간과 패턴에 맞춘 알림 설정</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2025 스마트 약통. LogiSave 팀 제작</p>
+            <p>문의: support@smartmedicinebox.com</p>
+        </div>
+    </footer>
+
+    <script src="/js/common.js"></script>
+</body>
+</html>

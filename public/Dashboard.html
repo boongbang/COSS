@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>?Ä?úÎ≥¥??- ?§Îßà???ΩÌÜµ</title>
+    <link rel="stylesheet" href="/css/Style.css">
+    <link rel="stylesheet" href="/config/dashboard.css">
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- ?¨Ïù¥?úÎ∞î -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>?íä ?§Îßà???ΩÌÜµ</h2>
+                <p class="user-name" id="userName">?òÏòÅ?©Îãà??/p>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-page="overview">
+                    <span class="icon">?ìä</span>
+                    <span>?Ä?úÎ≥¥??/span>
+                </a>
+                <a href="#" class="nav-item" data-page="medicine">
+                    <span class="icon">?íä</span>
+                    <span>??Í¥ÄÎ¶?/span>
+                </a>
+                <a href="#" class="nav-item" data-page="schedule">
+                    <span class="icon">?ìÖ</span>
+                    <span>Î≥µÏö© ?ºÏ†ï</span>
+                </a>
+                <a href="#" class="nav-item" data-page="history">
+                    <span class="icon">?ìú</span>
+                    <span>Î≥µÏö© Í∏∞Î°ù</span>
+                </a>
+                <a href="#" class="nav-item" data-page="health">
+                    <span class="icon">?íó</span>
+                    <span>Í±¥Í∞ï ?ºÏ?</span>
+                </a>
+                <a href="#" class="nav-item" data-page="statistics">
+                    <span class="icon">?ìà</span>
+                    <span>?µÍ≥Ñ Î∂ÑÏÑù</span>
+                </a>
+                <a href="#" class="nav-item" data-page="guardian">
+                    <span class="icon">?ë®?çüë©‚Äçüë?/span>
+                    <span>Î≥¥Ìò∏??Í¥ÄÎ¶?/span>
+                </a>
+                <a href="#" class="nav-item" data-page="settings">
+                    <span class="icon">?ôÔ∏è</span>
+                    <span>?§Ï†ï</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button class="btn btn-outline" id="logoutBtn">Î°úÍ∑∏?ÑÏõÉ</button>
+            </div>
+        </aside>
+        
+        <!-- Î©îÏù∏ ÏΩòÌÖêÏ∏?-->
+        <main class="main-content">
+            <!-- ?§Îçî -->
+            <header class="content-header">
+                <h1 id="pageTitle">?Ä?úÎ≥¥??/h1>
+                <div class="header-actions">
+                    <button class="btn-notification" id="notificationBtn">
+                        <span class="icon">?îî</span>
+                        <span class="badge" id="notificationCount">0</span>
+                    </button>
+                    <span class="current-time" id="currentTime"></span>
+                </div>
+            </header>
+            
+            <!-- ?òÏù¥ÏßÄ ÏΩòÌÖêÏ∏?-->
+            <div id="pageContent">
+                <!-- ?Ä?úÎ≥¥??Í∞úÏöî ?òÏù¥ÏßÄ -->
+                <div id="overview" class="page-section">
+                    <!-- ?§Îäò??Î≥µÏö© ?ÑÌô© -->
+                    <section class="today-status">
+                        <h2 class="section-title">?§Îäò??Î≥µÏö© ?ÑÌô©</h2>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value" id="totalDoses">0</div>
+                                <div class="stat-label">?ÑÏ≤¥</div>
+                            </div>
+                            <div class="stat-card success">
+                                <div class="stat-value" id="takenDoses">0</div>
+                                <div class="stat-label">Î≥µÏö© ?ÑÎ£å</div>
+                            </div>
+                            <div class="stat-card warning">
+                                <div class="stat-value" id="pendingDoses">0</div>
+                                <div class="stat-label">?ÄÍ∏?Ï§?/div>
+                            </div>
+                            <div class="stat-card danger">
+                                <div class="stat-value" id="missedDoses">0</div>
+                                <div class="stat-label">?ìÏπú Î≥µÏö©</div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- ?§Ïùå Î≥µÏö© ?àÏ†ï -->
+                    <section class="next-dose-section card">
+                        <h2 class="card-header">?§Ïùå Î≥µÏö© ?àÏ†ï</h2>
+                        <div id="nextDoseInfo">
+                            <div class="next-dose-empty">
+                                <p>?§Îäò?Ä ???¥ÏÉÅ Î≥µÏö©???ΩÏù¥ ?ÜÏäµ?àÎã§.</p>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- ?ΩÌÜµ ?ÅÌÉú -->
+                    <section class="medicine-box-section card">
+                        <h2 class="card-header">?ΩÌÜµ ?ÅÌÉú</h2>
+                        <div class="medicine-compartments" id="compartmentGrid">
+                            <div class="compartment" data-day="1">
+                                <div class="compartment-label">??/div>
+                                <div class="compartment-info">ÎπÑÏñ¥?àÏùå</div>
+                            </div>
+                            <div class="compartment" data-day="2">
+                                <div class="compartment-label">??/div>
+                                <div class="compartment-info">ÎπÑÏñ¥?àÏùå</div>
+                            </div>
+                            <div class="compartment" data-day="3">
+                                <div class="compartment-label">??/div>
+                                <div class="compartment-info">ÎπÑÏñ¥?àÏùå</div>
+                            </div>
+                            <div class="compartment" data-day="4">
+                                <div class="compartment-label">Î™?/div>
+                                <div class="compartment-info">ÎπÑÏñ¥?àÏùå</div>
+                            </div>
+                            <div class="compartment" data-day="5">
+                                <div class="compartment-label">Í∏?/div>
+                                <div class="compartment-info">ÎπÑÏñ¥?àÏùå</div>
+                            </div>
+                            <div class="compartment" data-day="6">
+                                <div class="compartment-label">??/div>
+                                <div class="compartment-info">ÎπÑÏñ¥?àÏùå</div>
+                            </div>
+                            <div class="compartment" data-day="7">
+                                <div class="compartment-label">??/div>
+                                <div class="compartment-info">ÎπÑÏñ¥?àÏùå</div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Ï£ºÍ∞Ñ Î≥µÏö©Î•?Ï∞®Ìä∏ -->
+                    <section class="chart-section card">
+                        <h2 class="card-header">Ï£ºÍ∞Ñ Î≥µÏö©Î•?/h2>
+                        <canvas id="weeklyChart"></canvas>
+                    </section>
+                    
+                    <!-- ÏµúÍ∑º Í±¥Í∞ï Í∏∞Î°ù -->
+                    <section class="recent-health card">
+                        <h2 class="card-header">ÏµúÍ∑º Í±¥Í∞ï Í∏∞Î°ù</h2>
+                        <div id="recentHealthData">
+                            <p>?ÑÏßÅ Í∏∞Î°ù??Í±¥Í∞ï ?∞Ïù¥?∞Í? ?ÜÏäµ?àÎã§.</p>
+                        </div>
+                    </section>
+                </div>
+                
+                <!-- ??Í¥ÄÎ¶??òÏù¥ÏßÄ -->
+                <div id="medicine" class="page-section" style="display:none;">
+                    <div class="card">
+                        <h2 class="card-header">?ΩÌíà Í¥ÄÎ¶?/h2>
+                        <button class="btn btn-primary" id="addMedicineBtn">
+                            + ???ΩÌíà Ï∂îÍ?
+                        </button>
+                        <div id="medicineList" class="medicine-list">
+                            <!-- ?ΩÌíà Î™©Î°ù???¨Í∏∞???ôÏ†Å?ºÎ°ú Î°úÎìú?©Îãà??-->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Î≥µÏö© ?ºÏ†ï ?òÏù¥ÏßÄ -->
+                <div id="schedule" class="page-section" style="display:none;">
+                    <div class="card">
+                        <h2 class="card-header">?§Îäò??Î≥µÏö© ?ºÏ†ï</h2>
+                        <div id="todaySchedule" class="schedule-list">
+                            <!-- ?ºÏ†ï???¨Í∏∞???ôÏ†Å?ºÎ°ú Î°úÎìú?©Îãà??-->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Î≥µÏö© Í∏∞Î°ù ?òÏù¥ÏßÄ -->
+                <div id="history" class="page-section" style="display:none;">
+                    <div class="card">
+                        <h2 class="card-header">Î≥µÏö© Í∏∞Î°ù</h2>
+                        <div class="filter-section">
+                            <input type="date" id="historyStartDate" class="form-control">
+                            <span>~</span>
+                            <input type="date" id="historyEndDate" class="form-control">
+                            <button class="btn btn-primary" id="searchHistoryBtn">Ï°∞Ìöå</button>
+                            <button class="btn btn-secondary" id="exportHistoryBtn">?¥Î≥¥?¥Í∏∞</button>
+                        </div>
+                        <div id="historyList" class="history-list">
+                            <!-- Í∏∞Î°ù???¨Í∏∞???ôÏ†Å?ºÎ°ú Î°úÎìú?©Îãà??-->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Í±¥Í∞ï ?ºÏ? ?òÏù¥ÏßÄ -->
+                <div id="health" class="page-section" style="display:none;">
+                    <div class="card">
+                        <h2 class="card-header">Í±¥Í∞ï ?ºÏ?</h2>
+                        <button class="btn btn-primary" id="addHealthNoteBtn">
+                            + ?§Îäò??Í±¥Í∞ï Í∏∞Î°ù?òÍ∏∞
+                        </button>
+                        <div id="healthNotes" class="health-notes">
+                            <!-- Í±¥Í∞ï ?ºÏ?Í∞Ä ?¨Í∏∞???ôÏ†Å?ºÎ°ú Î°úÎìú?©Îãà??-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- ?ΩÌíà Ï∂îÍ? Î™®Îã¨ -->
+    <div id="medicineModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h2 class="modal-header">?ΩÌíà Ï∂îÍ?</h2>
+            <form id="medicineForm">
+                <div class="form-group">
+                    <label class="form-label">?ΩÌíàÎ™?/label>
+                    <input type="text" class="form-control" id="medicineName" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Ïπ?Î≤àÌò∏ (1-7)</label>
+                    <select class="form-control" id="compartmentNo" required>
+                        <option value="">?†ÌÉù?òÏÑ∏??/option>
+                        <option value="1">1Î≤?(??</option>
+                        <option value="2">2Î≤?(??</option>
+                        <option value="3">3Î≤?(??</option>
+                        <option value="4">4Î≤?(Î™?</option>
+                        <option value="5">5Î≤?(Í∏?</option>
+                        <option value="6">6Î≤?(??</option>
+                        <option value="7">7Î≤?(??</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">?ΩÌíà ?†Ìòï</label>
+                    <select class="form-control" id="medicineType">
+                        <option value="prescription">Ï≤òÎ∞©??/option>
+                        <option value="otc">?ºÎ∞ò??/option>
+                        <option value="vitamin">ÎπÑÌ?ÎØ?/option>
+                        <option value="supplement">?ÅÏñë??/option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Î≥µÏö©??/label>
+                    <input type="text" class="form-control" id="dosage" placeholder="?? 1??>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Î≥µÏö© ?úÍ∞Ñ</label>
+                    <div id="timeSlots">
+                        <input type="time" class="form-control time-slot" value="09:00">
+                    </div>
+                    <button type="button" class="btn btn-secondary" id="addTimeSlot">+ ?úÍ∞Ñ Ï∂îÍ?</button>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">?úÏûë??/label>
+                    <input type="date" class="form-control" id="startDate" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Ï¢ÖÎ£å??/label>
+                    <input type="date" class="form-control" id="endDate">
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary">?Ä??/button>
+                    <button type="button" class="btn btn-outline" id="cancelMedicineBtn">Ï∑®ÏÜå</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Í±¥Í∞ï Í∏∞Î°ù Î™®Îã¨ -->
+    <div id="healthModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h2 class="modal-header">Í±¥Í∞ï Í∏∞Î°ù</h2>
+            <form id="healthForm">
+                <div class="form-group">
+                    <label class="form-label">?àÏïï (?òÏ∂ïÍ∏??¥ÏôÑÍ∏?</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="number" class="form-control" id="bpSys" placeholder="120">
+                        <span style="padding: 15px;">/</span>
+                        <input type="number" class="form-control" id="bpDia" placeholder="80">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">?àÎãπ (mg/dL)</label>
+                    <input type="number" class="form-control" id="bloodSugar" placeholder="100">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Ï≤¥Ï§ë (kg)</label>
+                    <input type="number" step="0.1" class="form-control" id="weight" placeholder="65.5">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">?§Îäò??Í∏∞Î∂Ñ</label>
+                    <select class="form-control" id="mood">
+                        <option value="">?†ÌÉù?òÏÑ∏??/option>
+                        <option value="very_good">Îß§Ïö∞ Ï¢ãÏùå</option>
+                        <option value="good">Ï¢ãÏùå</option>
+                        <option value="normal">Î≥¥ÌÜµ</option>
+                        <option value="bad">?òÏÅ®</option>
+                        <option value="very_bad">Îß§Ïö∞ ?òÏÅ®</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Ï¶ùÏÉÅ</label>
+                    <textarea class="form-control" id="symptoms" rows="3" 
+                              placeholder="?§Îäò ?êÎ? Ï¶ùÏÉÅ???ÅÏñ¥Ï£ºÏÑ∏??></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Î©îÎ™®</label>
+                    <textarea class="form-control" id="healthNotes" rows="3"
+                              placeholder="Ï∂îÍ?Î°?Í∏∞Î°ù?òÍ≥† ?∂Ï? ?¥Ïö©"></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary">?Ä??/button>
+                    <button type="button" class="btn btn-outline" id="cancelHealthBtn">Ï∑®ÏÜå</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/common.js"></script>
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>
