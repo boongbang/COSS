@@ -3,147 +3,672 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>스마트 약통 - 홈</title>
+    <title>스마트 약통 - IoT 약 복용 관리 시스템</title>
     <link rel="stylesheet" href="/css/style.css">
     <style>
+        /* Hero Section - Landscape 디자인 */
         .hero-section {
-            padding: 60px 0;
+            min-height: 100vh;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        /* 산 풍경 배경 */
+        .mountain-bg {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            clip-path: polygon(0 40%, 25% 0, 50% 30%, 75% 10%, 100% 35%, 100% 100%, 0 100%);
+        }
+
+        .mountain-bg::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80%;
+            background: rgba(255,255,255,0.08);
+            clip-path: polygon(0 50%, 35% 20%, 65% 45%, 100% 25%, 100% 100%, 0 100%);
+        }
+
+        /* 구름 애니메이션 */
+        .clouds {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .cloud {
+            position: absolute;
+            background: rgba(255,255,255,0.15);
+            border-radius: 100px;
+            opacity: 0.8;
+        }
+
+        .cloud::before,
+        .cloud::after {
+            content: '';
+            position: absolute;
+            background: rgba(255,255,255,0.15);
+            border-radius: 100px;
+        }
+
+        .cloud1 {
+            width: 100px;
+            height: 40px;
+            top: 20%;
+            animation: float 30s infinite;
+        }
+
+        .cloud1::before {
+            width: 50px;
+            height: 50px;
+            top: -25px;
+            left: 10px;
+        }
+
+        .cloud1::after {
+            width: 60px;
+            height: 40px;
+            top: -15px;
+            right: 10px;
+        }
+
+        .cloud2 {
+            width: 80px;
+            height: 35px;
+            top: 40%;
+            animation: float 35s infinite reverse;
+        }
+
+        .cloud2::before {
+            width: 40px;
+            height: 40px;
+            top: -20px;
+            left: 15px;
+        }
+
+        .cloud2::after {
+            width: 50px;
+            height: 35px;
+            top: -10px;
+            right: 15px;
+        }
+
+        @keyframes float {
+            0% { transform: translateX(-100px); }
+            100% { transform: translateX(calc(100vw + 100px)); }
+        }
+
+        /* 별 애니메이션 */
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 4s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        /* Hero Content */
+        .hero-content {
+            position: relative;
+            z-index: 10;
             text-align: center;
+            color: white;
+            padding: 0 20px;
+            max-width: 800px;
+            margin: 0 auto;
         }
+
         .hero-title {
-            font-size: 48px;
+            font-size: clamp(36px, 8vw, 64px);
+            font-weight: 700;
             margin-bottom: 20px;
+            animation: fadeInUp 1s ease;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
-        .hero-description {
-            font-size: 24px;
+
+        .hero-subtitle {
+            font-size: clamp(20px, 4vw, 28px);
             margin-bottom: 40px;
+            opacity: 0.95;
+            animation: fadeInUp 1s ease 0.2s backwards;
+            line-height: 1.4;
         }
+
         .hero-buttons {
             display: flex;
             gap: 20px;
             justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.4s backwards;
         }
+
+        .hero-btn {
+            padding: 18px 40px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+            min-width: 180px;
+        }
+
+        .hero-btn-primary {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .hero-btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .hero-btn-outline {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 2px solid white;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-btn-outline:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Features Section */
         .features-section {
-            padding: 80px 0;
+            padding: 100px 0;
+            background: linear-gradient(180deg, #f7fafc 0%, #e2e8f0 100%);
         }
+
         .section-title {
             text-align: center;
-            font-size: 36px;
-            margin-bottom: 50px;
+            font-size: clamp(32px, 5vw, 48px);
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 20px;
+            color: #718096;
+            margin-bottom: 60px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 30px;
-            margin-top: 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
+
         .feature-card {
             background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transform: scaleX(0);
             transition: transform 0.3s;
         }
+
         .feature-card:hover {
             transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
         }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
         .feature-icon {
-            font-size: 48px;
-            margin-bottom: 20px;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: white;
+            transition: all 0.3s;
         }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
         .feature-card h3 {
             font-size: 24px;
             margin-bottom: 15px;
-            color: var(--primary-color);
+            color: #2d3748;
         }
-        .main-footer {
-            background: #333;
+
+        .feature-card p {
+            font-size: 16px;
+            color: #718096;
+            line-height: 1.6;
+        }
+
+        /* How It Works Section */
+        .how-section {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .steps-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 60px;
+            opacity: 0;
+            animation: fadeIn 0.8s forwards;
+        }
+
+        .step:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .step-number {
+            flex-shrink: 0;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 40px 0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .step-content h3 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+
+        .step-content p {
+            font-size: 18px;
+            color: #718096;
+            line-height: 1.6;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             text-align: center;
-            margin-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: rgba(255,255,255,0.05);
+            transform: skewX(-20deg);
+            animation: shine 8s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            50%, 100% { left: 100%; }
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-size: clamp(32px, 5vw, 48px);
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .cta-subtitle {
+            font-size: 20px;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 40px;
+        }
+
+        /* Footer */
+        .main-footer {
+            background: #2d3748;
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #cbd5e0;
+            text-decoration: none;
+            line-height: 1.8;
+        }
+
+        .footer-section a:hover {
+            color: #667eea;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #cbd5e0;
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .hero-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .step {
+                flex-direction: column !important;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
-    <header class="main-header">
-        <div class="container">
-            <div class="logo">
-                <h1>💊 스마트 약통</h1>
-            </div>
-            <nav class="main-nav">
-                <a href="/login">로그인</a>
-                <a href="/register">회원가입</a>
-            </nav>
-        </div>
-    </header>
-
+    <!-- Hero Section with Landscape Design -->
     <section class="hero-section">
-        <div class="container">
-            <h2 class="hero-title">약 복용을 잊지 마세요!</h2>
-            <p class="hero-description">
-                IoT 센서와 실시간 알림으로<br>
+        <!-- 별 배경 -->
+        <div class="stars">
+            <div class="star" style="top: 10%; left: 20%; animation-delay: 0s;"></div>
+            <div class="star" style="top: 20%; left: 80%; animation-delay: 1s;"></div>
+            <div class="star" style="top: 30%; left: 60%; animation-delay: 2s;"></div>
+            <div class="star" style="top: 15%; left: 40%; animation-delay: 3s;"></div>
+            <div class="star" style="top: 25%; left: 70%; animation-delay: 1.5s;"></div>
+        </div>
+
+        <!-- 구름 -->
+        <div class="clouds">
+            <div class="cloud cloud1"></div>
+            <div class="cloud cloud2"></div>
+        </div>
+
+        <!-- 산 배경 -->
+        <div class="mountain-bg"></div>
+
+        <!-- Hero Content -->
+        <div class="hero-content">
+            <h1 class="hero-title">💊 스마트 약통 시스템</h1>
+            <p class="hero-subtitle">
+                IoT 센서와 AI 기반 알림으로<br>
                 정확한 시간에 약을 복용할 수 있도록 도와드립니다
             </p>
             <div class="hero-buttons">
-                <a href="/register" class="btn btn-large" style="background: white; color: var(--primary-color);">
+                <a href="/register" class="hero-btn hero-btn-primary">
                     시작하기
                 </a>
-                <a href="#features" class="btn btn-outline btn-large" style="border-color: white; color: white;">
+                <a href="#features" class="hero-btn hero-btn-outline">
                     더 알아보기
                 </a>
             </div>
         </div>
     </section>
 
+    <!-- Features Section -->
     <section id="features" class="features-section">
         <div class="container">
             <h2 class="section-title">주요 기능</h2>
+            <p class="section-subtitle">
+                스마트한 약 복용 관리로 건강한 일상을 만들어갑니다
+            </p>
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-icon">📡</div>
                     <h3>IoT 센서 연동</h3>
-                    <p>적외선 센서로 약 복용을 자동 감지하고 기록합니다</p>
+                    <p>Arduino R4 WiFi와 적외선 센서로 약 복용을 자동 감지하고 실시간으로 기록합니다</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">⏰</div>
-                    <h3>실시간 알림</h3>
-                    <p>복용 시간에 맞춰 알림을 보내드립니다</p>
+                    <h3>스마트 알림</h3>
+                    <p>개인별 복용 스케줄에 맞춰 정확한 시간에 알림을 보내드립니다</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">📊</div>
-                    <h3>복용 통계</h3>
-                    <p>복용률과 패턴을 분석하여 건강 관리에 도움을 드립니다</p>
+                    <h3>복용 통계 분석</h3>
+                    <p>일별, 주별, 월별 복용률을 분석하여 건강 관리를 도와드립니다</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">👨‍👩‍👧</div>
-                    <h3>보호자 연동</h3>
-                    <p>가족이나 의료진과 복용 정보를 공유할 수 있습니다</p>
+                    <h3>보호자 케어</h3>
+                    <p>가족이나 의료진과 복용 정보를 실시간으로 공유할 수 있습니다</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">📝</div>
                     <h3>건강 일지</h3>
-                    <p>혈압, 혈당 등 건강 정보를 기록하고 추이를 확인합니다</p>
+                    <p>혈압, 혈당, 체중 등 건강 지표를 기록하고 추이를 분석합니다</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">🔔</div>
-                    <h3>맞춤 알림</h3>
-                    <p>개인별 복용 시간과 패턴에 맞춘 알림 설정</p>
+                    <h3>맞춤형 관리</h3>
+                    <p>복용 패턴을 분석하여 개인별 최적화된 관리 방안을 제시합니다</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="main-footer">
+    <!-- How It Works Section -->
+    <section class="how-section">
         <div class="container">
-            <p>&copy; 2025 스마트 약통. LogiSave 팀 제작</p>
-            <p>문의: support@smartmedicinebox.com</p>
+            <h2 class="section-title">이용 방법</h2>
+            <p class="section-subtitle">
+                간단한 3단계로 스마트한 약 복용 관리를 시작하세요
+            </p>
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>스마트 약통 설치</h3>
+                        <p>Arduino 기반 스마트 약통을 WiFi에 연결하고, 웹 서비스에 등록합니다. 7개의 약통 칸에 약을 보관할 수 있습니다.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>약품 정보 등록</h3>
+                        <p>복용 중인 약품 정보와 복용 시간을 등록하면, 자동으로 알림 스케줄이 생성됩니다.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>자동 모니터링</h3>
+                        <p>센서가 약통 개폐를 감지하여 복용 여부를 자동 기록하고, 대시보드에서 실시간으로 확인할 수 있습니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">지금 바로 시작하세요!</h2>
+                <p class="cta-subtitle">
+                    건강한 약 복용 습관, 스마트 약통과 함께 만들어가세요
+                </p>
+                <a href="/register" class="hero-btn hero-btn-primary">
+                    무료로 시작하기
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>스마트 약통</h3>
+                <p>IoT와 AI 기술로 만드는<br>건강한 약 복용 문화</p>
+                <p style="margin-top: 15px;">© 2025 LogiSave Team</p>
+            </div>
+            <div class="footer-section">
+                <h3>빠른 링크</h3>
+                <p><a href="/login">로그인</a></p>
+                <p><a href="/register">회원가입</a></p>
+                <p><a href="/dashboard">대시보드</a></p>
+                <p><a href="#features">기능 소개</a></p>
+            </div>
+            <div class="footer-section">
+                <h3>문의하기</h3>
+                <p>이메일: support@smartmedicinebox.com</p>
+                <p>전화: 1588-1234</p>
+                <p>운영시간: 평일 9:00 - 18:00</p>
+            </div>
+            <div class="footer-section">
+                <h3>기술 스택</h3>
+                <p>Arduino R4 WiFi</p>
+                <p>Node.js / Express</p>
+                <p>MariaDB / Cloudtype</p>
+                <p>Socket.io / Chart.js</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>2025 AI·SW융합 경진대회 출품작 | Team LogiSave</p>
         </div>
     </footer>
 
     <script src="/js/common.js"></script>
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.step').forEach((step, index) => {
+            step.style.animationDelay = `${index * 0.2}s`;
+            step.style.animationPlayState = 'paused';
+            observer.observe(step);
+        });
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </script>
 </body>
 </html>

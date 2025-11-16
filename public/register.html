@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 - 스마트 약통</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        /* 배경 애니메이션 */
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            top: 0;
+            left: 0;
+        }
+
+        .bg-wave {
+            position: absolute;
+            bottom: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255,255,255,0.05);
+            border-radius: 40%;
+            animation: wave 20s infinite linear;
+        }
+
+        .bg-wave:nth-child(2) {
+            animation-delay: 5s;
+            background: rgba(255,255,255,0.03);
+        }
+
+        .bg-wave:nth-child(3) {
+            animation-delay: 10s;
+            background: rgba(255,255,255,0.02);
+        }
+
+        @keyframes wave {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 회원가입 컨테이너 */
+        .register-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 500px;
+            margin: 40px auto;
+        }
+
+        .register-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideUp 0.6s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .register-logo {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .register-title {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .register-subtitle {
+            color: #718096;
+            font-size: 16px;
+        }
+
+        /* 단계 표시기 */
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .step {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: #718096;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .step.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .step.completed {
+            background: #48bb78;
+            color: white;
+        }
+
+        /* 폼 스타일 */
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.4s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .form-floating {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .form-floating input,
+        .form-floating select {
+            width: 100%;
+            padding: 20px 15px 8px 15px;
+            font-size: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: white;
+            transition: all 0.3s;
+        }
+
+        .form-floating label {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: #718096;
+            transition: all 0.3s;
+            pointer-events: none;
+            background: white;
+            padding: 0 5px;
+        }
+
+        .form-floating input:focus,
+        .form-floating input:not(:placeholder-shown),
+        .form-floating select:focus,
+        .form-floating select:valid {
+            border-color: #667eea;
+            padding-top: 25px;
+            padding-bottom: 5px;
+        }
+
+        .form-floating input:focus + label,
+        .form-floating input:not(:placeholder-shown) + label,
+        .form-floating select:focus + label,
+        .form-floating select:valid + label {
+            top: 10px;
+            font-size: 12px;
+            color: #667eea;
+        }
+
+        /* 사용자 유형 선택 */
+        .user-type-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .user-type-option {
+            padding: 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .user-type-option:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .user-type-option.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102,126,234,0.1) 0%, rgba(118,75,162,0.1) 100%);
+        }
+
+        .user-type-icon {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+
+        .user-type-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        /* 버튼 그룹 */
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-prev,
+        .btn-next,
+        .btn-register {
+            flex: 1;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-prev {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+
+        .btn-prev:hover {
+            background: #cbd5e0;
+        }
+
+        .btn-next,
+        .btn-register {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-next::before,
+        .btn-register::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.2);
+            transition: left 0.5s;
+        }
+
+        .btn-next:hover::before,
+        .btn-register:hover::before {
+            left: 100%;
+        }
+
+        .btn-next:hover,
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        /* 약관 동의 */
+        .terms-section {
+            margin: 20px 0;
+        }
+
+        .terms-box {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            max-height: 150px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #4a5568;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            cursor: pointer;
+            user-select: none;
+            flex: 1;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 30px;
+            color: #718096;
+        }
+
+        .login-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .login-link a:hover {
+            color: #764ba2;
+        }
+
+        .back-home {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600;
+            transition: transform 0.3s;
+            z-index: 20;
+        }
+
+        .back-home:hover {
+            transform: translateX(-5px);
+        }
+
+        .error-message {
+            color: #e53e3e;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: shake 0.5s;
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, rgba(72, 187, 120, 0.1), rgba(72, 187, 120, 0.2));
+            color: #22543d;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideUp 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* 반응형 */
+        @media (max-width: 600px) {
+            .register-card {
+                padding: 30px 20px;
+            }
+
+            .register-title {
+                font-size: 28px;
+            }
+
+            .user-type-selector {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 배경 애니메이션 -->
+    <div class="bg-animation">
+        <div class="bg-wave"></div>
+        <div class="bg-wave"></div>
+        <div class="bg-wave"></div>
+    </div>
+
+    <!-- 홈으로 돌아가기 -->
+    <a href="/" class="back-home">
+        ← 홈으로
+    </a>
+
+    <!-- 회원가입 폼 -->
+    <div class="register-container">
+        <div class="register-card">
+            <div class="register-header">
+                <div class="register-logo">💊</div>
+                <h1 class="register-title">회원가입</h1>
+                <p class="register-subtitle">스마트 약통과 함께 시작하세요</p>
+            </div>
+
+            <!-- 단계 표시기 -->
+            <div class="step-indicator">
+                <div class="step active" id="step1">1</div>
+                <div class="step" id="step2">2</div>
+                <div class="step" id="step3">3</div>
+            </div>
+
+            <form id="registerForm">
+                <!-- Step 1: 기본 정보 -->
+                <div class="form-section active" id="section1">
+                    <h3 style="margin-bottom: 20px;">기본 정보</h3>
+                    
+                    <div class="form-floating">
+                        <input type="text" id="username" placeholder=" " required>
+                        <label for="username">아이디</label>
+                        <div class="error-message" id="usernameError"></div>
+                    </div>
+
+                    <div class="form-floating">
+                        <input type="password" id="password" placeholder=" " required>
+                        <label for="password">비밀번호</label>
+                        <div class="error-message" id="passwordError"></div>
+                    </div>
+
+                    <div class="form-floating">
+                        <input type="password" id="passwordConfirm" placeholder=" " required>
+                        <label for="passwordConfirm">비밀번호 확인</label>
+                        <div class="error-message" id="passwordConfirmError"></div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn-next" onclick="nextStep()">
+                            다음 단계
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: 개인 정보 -->
+                <div class="form-section" id="section2">
+                    <h3 style="margin-bottom: 20px;">개인 정보</h3>
+                    
+                    <div class="form-floating">
+                        <input type="text" id="name" placeholder=" " required>
+                        <label for="name">이름</label>
+                        <div class="error-message" id="nameError"></div>
+                    </div>
+
+                    <div class="form-floating">
+                        <input type="email" id="email" placeholder=" ">
+                        <label for="email">이메일 (선택)</label>
+                    </div>
+
+                    <div class="form-floating">
+                        <input type="tel" id="phone" placeholder=" " pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}">
+                        <label for="phone">전화번호 (예: 010-1234-5678)</label>
+                    </div>
+
+                    <h4 style="margin: 20px 0 10px; font-size: 16px;">사용자 유형</h4>
+                    <div class="user-type-selector">
+                        <div class="user-type-option selected" data-type="patient" onclick="selectUserType(this)">
+                            <div class="user-type-icon">👤</div>
+                            <div class="user-type-label">환자</div>
+                        </div>
+                        <div class="user-type-option" data-type="guardian" onclick="selectUserType(this)">
+                            <div class="user-type-icon">👨‍👩‍👧</div>
+                            <div class="user-type-label">보호자</div>
+                        </div>
+                        <div class="user-type-option" data-type="admin" onclick="selectUserType(this)">
+                            <div class="user-type-icon">⚕️</div>
+                            <div class="user-type-label">의료진</div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="userType" value="patient">
+
+                    <div class="button-group">
+                        <button type="button" class="btn-prev" onclick="prevStep()">
+                            이전
+                        </button>
+                        <button type="button" class="btn-next" onclick="nextStep()">
+                            다음 단계
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: 약관 동의 -->
+                <div class="form-section" id="section3">
+                    <h3 style="margin-bottom: 20px;">약관 동의</h3>
+                    
+                    <div class="terms-section">
+                        <h4 style="font-size: 14px; margin-bottom: 10px;">이용약관</h4>
+                        <div class="terms-box">
+                            <p>제1조 (목적)</p>
+                            <p>본 약관은 스마트 약통 서비스(이하 "서비스")의 이용조건 및 절차, 회사와 회원 간의 권리, 의무 및 책임사항 등을 규정함을 목적으로 합니다.</p>
+                            <p>제2조 (정의)</p>
+                            <p>1. "서비스"란 회사가 제공하는 IoT 기반 약 복용 관리 시스템을 말합니다.</p>
+                            <p>2. "회원"이란 본 약관에 따라 회사와 이용계약을 체결하고 서비스를 이용하는 자를 말합니다.</p>
+                            <p>제3조 (약관의 효력 및 변경)</p>
+                            <p>1. 본 약관은 서비스를 이용하고자 하는 모든 회원에 대하여 그 효력을 발생합니다.</p>
+                            <p>2. 회사는 필요한 경우 약관을 변경할 수 있으며, 변경된 약관은 공지 후 효력을 발생합니다.</p>
+                        </div>
+
+                        <h4 style="font-size: 14px; margin-bottom: 10px;">개인정보 처리방침</h4>
+                        <div class="terms-box">
+                            <p>1. 수집하는 개인정보</p>
+                            <p>- 필수항목: 아이디, 비밀번호, 이름</p>
+                            <p>- 선택항목: 이메일, 전화번호, 건강 정보</p>
+                            <p>2. 개인정보의 이용목적</p>
+                            <p>- 서비스 제공 및 운영</p>
+                            <p>- 복용 관리 및 알림 서비스</p>
+                            <p>- 고객 상담 및 불만 처리</p>
+                            <p>3. 개인정보의 보유 및 이용기간</p>
+                            <p>- 회원 탈퇴 시까지 보유</p>
+                            <p>- 관련 법령에 따른 보존 필요시 해당 기간 동안 보관</p>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="agreeAll" onchange="checkAllTerms()">
+                            <label for="agreeAll"><strong>모든 약관에 동의합니다</strong></label>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="agreeTerms" required>
+                            <label for="agreeTerms">[필수] 이용약관에 동의합니다</label>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="agreePrivacy" required>
+                            <label for="agreePrivacy">[필수] 개인정보 처리방침에 동의합니다</label>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="agreeMarketing">
+                            <label for="agreeMarketing">[선택] 마케팅 정보 수신에 동의합니다</label>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn-prev" onclick="prevStep()">
+                            이전
+                        </button>
+                        <button type="submit" class="btn-register">
+                            가입 완료
+                        </button>
+                    </div>
+                </div>
+
+                <div class="error-message" id="generalError"></div>
+                <div class="success-message" id="successMessage">
+                    회원가입이 완료되었습니다! 잠시 후 로그인 페이지로 이동합니다.
+                </div>
+            </form>
+
+            <div class="login-link">
+                이미 계정이 있으신가요? <a href="/login">로그인하기</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/common.js"></script>
+    <script>
+        let currentStep = 1;
+
+        function nextStep() {
+            if (validateStep(currentStep)) {
+                document.getElementById(`section${currentStep}`).classList.remove('active');
+                document.getElementById(`step${currentStep}`).classList.add('completed');
+                currentStep++;
+                document.getElementById(`section${currentStep}`).classList.add('active');
+                document.getElementById(`step${currentStep}`).classList.add('active');
+            }
+        }
+
+        function prevStep() {
+            document.getElementById(`section${currentStep}`).classList.remove('active');
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            currentStep--;
+            document.getElementById(`section${currentStep}`).classList.add('active');
+            document.getElementById(`step${currentStep}`).classList.remove('completed');
+        }
+
+        function validateStep(step) {
+            // 에러 메시지 초기화
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.classList.remove('show');
+                el.textContent = '';
+            });
+
+            if (step === 1) {
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const passwordConfirm = document.getElementById('passwordConfirm').value;
+                let isValid = true;
+
+                if (!username) {
+                    showError('usernameError', '아이디를 입력해주세요.');
+                    isValid = false;
+                } else if (username.length < 4) {
+                    showError('usernameError', '아이디는 4자 이상이어야 합니다.');
+                    isValid = false;
+                }
+
+                if (!password) {
+                    showError('passwordError', '비밀번호를 입력해주세요.');
+                    isValid = false;
+                } else if (password.length < 6) {
+                    showError('passwordError', '비밀번호는 6자 이상이어야 합니다.');
+                    isValid = false;
+                }
+
+                if (password !== passwordConfirm) {
+                    showError('passwordConfirmError', '비밀번호가 일치하지 않습니다.');
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+            if (step === 2) {
+                const name = document.getElementById('name').value;
+                if (!name) {
+                    showError('nameError', '이름을 입력해주세요.');
+                    return false;
+                }
+                return true;
+            }
+
+            return true;
+        }
+
+        function showError(id, message) {
+            const error = document.getElementById(id);
+            error.textContent = message;
+            error.classList.add('show');
+        }
+
+        function selectUserType(element) {
+            document.querySelectorAll('.user-type-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            document.getElementById('userType').value = element.dataset.type;
+        }
+
+        function checkAllTerms() {
+            const checkAll = document.getElementById('agreeAll').checked;
+            document.getElementById('agreeTerms').checked = checkAll;
+            document.getElementById('agreePrivacy').checked = checkAll;
+            document.getElementById('agreeMarketing').checked = checkAll;
+        }
+
+        // 회원가입 폼 제출
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!document.getElementById('agreeTerms').checked || 
+                !document.getElementById('agreePrivacy').checked) {
+                showError('generalError', '필수 약관에 동의해주세요.');
+                return;
+            }
+
+            const formData = {
+                username: document.getElementById('username').value,
+                password: document.getElementById('password').value,
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                user_type: document.getElementById('userType').value
+            };
+
+            try {
+                const response = await utils.apiRequest('/auth/register', {
+                    method: 'POST',
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.success) {
+                    document.getElementById('successMessage').classList.add('show');
+                    setTimeout(() => {
+                        window.location.href = '/login';
+                    }, 2000);
+                }
+            } catch (error) {
+                showError('generalError', error.message || '회원가입에 실패했습니다.');
+            }
+        });
+    </script>
+</body>
+</html>

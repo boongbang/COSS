@@ -3,260 +3,411 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>로그??- ?�마???�통</title>
-    <link rel="stylesheet" href="/css/Style.css">
+    <title>로그인 - 스마트 약통</title>
+    <link rel="stylesheet" href="/css/style.css">
     <style>
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
         }
-        
+
+        /* 배경 애니메이션 */
+        .bg-animation {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .bg-bubble {
+            position: absolute;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            animation: float-up 15s infinite;
+        }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        /* 로그인 컨테이너 */
         .login-container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            padding: 40px;
+            position: relative;
+            z-index: 10;
             width: 100%;
             max-width: 450px;
+            padding: 20px;
         }
-        
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideUp 0.6s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
         .login-header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
-        
-        .login-header h1 {
-            font-size: 36px;
+
+        .login-logo {
+            font-size: 48px;
             margin-bottom: 10px;
-            color: var(--primary-color);
         }
-        
-        .login-header p {
-            color: var(--text-light);
-            font-size: 18px;
+
+        .login-title {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
         }
-        
-        .form-group {
-            margin-bottom: 25px;
+
+        .login-subtitle {
+            color: #718096;
+            font-size: 16px;
         }
-        
-        .form-control-icon {
+
+        /* 폼 스타일 */
+        .form-floating {
             position: relative;
-        }
-        
-        .form-control-icon input {
-            padding-left: 50px;
-        }
-        
-        .form-control-icon .icon {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 20px;
-        }
-        
-        .remember-forgot {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-        
-        .checkbox-label {
-            display: flex;
-            align-items: center;
-            font-size: 16px;
-        }
-        
-        .checkbox-label input {
-            margin-right: 8px;
-            width: 18px;
-            height: 18px;
-        }
-        
-        .forgot-link {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-size: 16px;
-        }
-        
-        .forgot-link:hover {
-            text-decoration: underline;
-        }
-        
-        .login-button {
-            width: 100%;
-            padding: 18px;
-            font-size: 20px;
-            font-weight: 600;
             margin-bottom: 20px;
         }
-        
+
+        .form-floating input {
+            width: 100%;
+            padding: 20px 15px 8px 15px;
+            font-size: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: white;
+            transition: all 0.3s;
+        }
+
+        .form-floating label {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: #718096;
+            transition: all 0.3s;
+            pointer-events: none;
+            background: white;
+            padding: 0 5px;
+        }
+
+        .form-floating input:focus,
+        .form-floating input:not(:placeholder-shown) {
+            border-color: #667eea;
+            padding-top: 25px;
+            padding-bottom: 5px;
+        }
+
+        .form-floating input:focus + label,
+        .form-floating input:not(:placeholder-shown) + label {
+            top: 10px;
+            font-size: 12px;
+            color: #667eea;
+        }
+
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .form-checkbox input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .form-checkbox label {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-login::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.2);
+            transition: left 0.5s;
+        }
+
+        .btn-login:hover::before {
+            left: 100%;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
         .divider {
             text-align: center;
-            margin: 20px 0;
+            margin: 30px 0;
             position: relative;
         }
-        
+
         .divider::before {
             content: '';
             position: absolute;
-            left: 0;
             top: 50%;
+            left: 0;
             width: 100%;
             height: 1px;
-            background: var(--border-color);
+            background: #e2e8f0;
         }
-        
+
         .divider span {
             background: white;
             padding: 0 15px;
             position: relative;
-            color: var(--text-light);
+            color: #718096;
         }
-        
-        .register-section {
+
+        .login-links {
             text-align: center;
-            padding-top: 20px;
+            margin-top: 30px;
         }
-        
-        .register-section p {
-            font-size: 16px;
-            color: var(--text-light);
-            margin-bottom: 15px;
+
+        .login-links a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
         }
-        
-        .demo-info {
-            background: #f0f7ff;
-            border: 1px solid #2196f3;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 20px;
+
+        .login-links a:hover {
+            color: #764ba2;
         }
-        
-        .demo-info h4 {
-            color: #2196f3;
-            margin-bottom: 10px;
+
+        .back-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600;
+            transition: transform 0.3s;
         }
-        
-        .demo-info p {
+
+        .back-home:hover {
+            transform: translateX(-5px);
+        }
+
+        .error-message {
+            color: #e53e3e;
             font-size: 14px;
-            margin: 5px 0;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* 반응형 */
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 30px 20px;
+            }
+
+            .login-title {
+                font-size: 28px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- 배경 애니메이션 -->
+    <div class="bg-animation">
+        <div class="bg-bubble" style="width: 80px; height: 80px; left: 10%; animation-delay: 0s;"></div>
+        <div class="bg-bubble" style="width: 120px; height: 120px; left: 30%; animation-delay: 2s;"></div>
+        <div class="bg-bubble" style="width: 60px; height: 60px; left: 50%; animation-delay: 4s;"></div>
+        <div class="bg-bubble" style="width: 100px; height: 100px; left: 70%; animation-delay: 1s;"></div>
+        <div class="bg-bubble" style="width: 90px; height: 90px; left: 85%; animation-delay: 3s;"></div>
+    </div>
+
+    <!-- 홈으로 돌아가기 -->
+    <a href="/" class="back-home">
+        ← 홈으로
+    </a>
+
+    <!-- 로그인 폼 -->
     <div class="login-container">
-        <div class="login-header">
-            <h1>?�� ?�마???�통</h1>
-            <p>건강??복용 ?��????�한 ?�우�?/p>
-        </div>
-        
-        <form id="loginForm">
-            <div class="form-group">
-                <label class="form-label" for="username">?�이??/label>
-                <div class="form-control-icon">
-                    <span class="icon">?��</span>
-                    <input type="text" class="form-control form-control-large" id="username" 
-                           placeholder="?�이?��? ?�력?�세?? required>
-                </div>
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-logo">💊</div>
+                <h1 class="login-title">스마트 약통</h1>
+                <p class="login-subtitle">건강한 약 복용 관리의 시작</p>
             </div>
-            
-            <div class="form-group">
-                <label class="form-label" for="password">비�?번호</label>
-                <div class="form-control-icon">
-                    <span class="icon">?��</span>
-                    <input type="password" class="form-control form-control-large" id="password" 
-                           placeholder="비�?번호�??�력?�세?? required>
+
+            <form id="loginForm">
+                <div class="form-floating">
+                    <input type="text" id="username" placeholder=" " required>
+                    <label for="username">아이디</label>
+                    <div class="error-message" id="usernameError"></div>
                 </div>
-            </div>
-            
-            <div class="remember-forgot">
-                <label class="checkbox-label">
+
+                <div class="form-floating">
+                    <input type="password" id="password" placeholder=" " required>
+                    <label for="password">비밀번호</label>
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+
+                <div class="form-checkbox">
                     <input type="checkbox" id="rememberMe">
-                    로그???�태 ?��?
-                </label>
-                <a href="#" class="forgot-link">비�?번호 찾기</a>
+                    <label for="rememberMe">로그인 상태 유지</label>
+                </div>
+
+                <button type="submit" class="btn-login">
+                    로그인
+                </button>
+
+                <div class="error-message" id="generalError"></div>
+            </form>
+
+            <div class="divider">
+                <span>또는</span>
             </div>
-            
-            <button type="submit" class="btn btn-primary login-button">
-                로그??
-            </button>
-        </form>
-        
-        <div class="divider">
-            <span>?�는</span>
-        </div>
-        
-        <div class="register-section">
-            <p>?�직 계정???�으?��???</p>
-            <a href="/register" class="btn btn-outline" style="width: 100%;">
-                ?�원가??
-            </a>
-        </div>
-        
-        <div class="demo-info">
-            <h4>?�� 체험 계정</h4>
-            <p><strong>?�이??</strong> test_user</p>
-            <p><strong>비�?번호:</strong> test1234</p>
-            <p>* ?�스?�용 계정?�로 ?�비?��? 체험?�보?�요</p>
+
+            <div class="login-links">
+                <p>아직 계정이 없으신가요?</p>
+                <a href="/register">회원가입하기</a>
+            </div>
         </div>
     </div>
-    
+
     <script src="/js/common.js"></script>
     <script>
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
+            // 에러 메시지 초기화
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.classList.remove('show');
+                el.textContent = '';
+            });
+            
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const rememberMe = document.getElementById('rememberMe').checked;
             
+            // 유효성 검사
+            if (!username) {
+                const error = document.getElementById('usernameError');
+                error.textContent = '아이디를 입력해주세요.';
+                error.classList.add('show');
+                return;
+            }
+            
+            if (!password) {
+                const error = document.getElementById('passwordError');
+                error.textContent = '비밀번호를 입력해주세요.';
+                error.classList.add('show');
+                return;
+            }
+            
             try {
-                const response = await fetch('/api/auth/login', {
+                const response = await utils.apiRequest('/auth/login', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
                     body: JSON.stringify({ username, password })
                 });
                 
-                const data = await response.json();
-                
-                if (data.success) {
-                    // ?�큰 ?�??
-                    if (rememberMe) {
-                        localStorage.setItem('token', data.token);
-                    } else {
-                        sessionStorage.setItem('token', data.token);
-                    }
+                if (response.success) {
+                    utils.TokenManager.setToken(response.token, rememberMe);
+                    utils.showAlert('로그인 성공!', 'success');
                     
-                    // ?�용???�보 ?�??
-                    localStorage.setItem('user', JSON.stringify(data.user));
-                    
-                    utils.showAlert('로그???�공!', 'success');
-                    
-                    // ?�?�보?�로 ?�동
+                    // 애니메이션 후 페이지 이동
                     setTimeout(() => {
                         window.location.href = '/dashboard';
-                    }, 1000);
-                } else {
-                    utils.showAlert(data.message || '로그?�에 ?�패?�습?�다.', 'error');
+                    }, 500);
                 }
             } catch (error) {
-                console.error('로그???�류:', error);
-                utils.showAlert('로그??처리 �??�류가 발생?�습?�다.', 'error');
+                const generalError = document.getElementById('generalError');
+                generalError.textContent = error.message || '로그인에 실패했습니다.';
+                generalError.classList.add('show');
+                
+                // 입력 필드 흔들기 효과
+                document.querySelector('.login-card').style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    document.querySelector('.login-card').style.animation = '';
+                }, 500);
             }
         });
-        
-        // ?��? 로그?�된 경우 ?�?�보?�로 리다?�렉??
-        if (utils.TokenManager.isLoggedIn()) {
-            window.location.href = '/dashboard';
-        }
+
+        // Enter 키로 로그인
+        document.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && e.target.tagName !== 'BUTTON') {
+                document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+            }
+        });
     </script>
 </body>
 </html>
