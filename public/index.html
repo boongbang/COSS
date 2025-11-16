@@ -1,674 +1,478 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>스마트 약통 - IoT 약 복용 관리 시스템</title>
-    <link rel="stylesheet" href="/css/style.css">
-    <style>
-        /* Hero Section - Landscape 디자인 */
-        .hero-section {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>먹었약 - 스마트 약통</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Noto+Serif+KR:wght@200;300;400;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Noto Sans KR',sans-serif;background:#1a2e1a;overflow-x:hidden}body::-webkit-scrollbar{display:none}body{-ms-overflow-style:none;scrollbar-width:none}.hero{min-height:100vh;background:linear-gradient(to bottom,rgba(70,98,70,0.95)0%,rgba(58,82,58,0.95)20%,rgba(42,62,42,0.95)45%,rgba(26,46,26,0.95)70%,rgba(26,46,26,1)100%);position:relative;display:flex;flex-direction:column;padding:40px 20px 120px}.top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:60px}.logo{color:white;font-size:20px;font-weight:700;text-transform:uppercase;letter-spacing:3px;cursor:pointer;transition:all .3s;text-decoration:none}.logo:hover{color:rgba(255,255,255,0.8);transform:scale(1.05)}.login-section{display:flex;gap:15px}.login-btn,.signup-btn{padding:9px 22px;border-radius:25px;font-size:12.6px;font-weight:600;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-block}.login-btn{background:transparent;color:white;border:2px solid rgba(255,255,255,0.5)}.login-btn:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.8)}.signup-btn{background:rgba(255,255,255,0.2);color:white;border:2px solid rgba(255,255,255,0.4)}.signup-btn:hover{background:rgba(255,255,255,0.3);border-color:rgba(255,255,255,0.6)}.hero-content{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;max-width:900px;margin:0 auto}.hero-title{font-family:'Noto Serif KR',serif;font-size:clamp(32px,6vw,56px);font-weight:300;color:white;margin-bottom:50px;line-height:1.3;letter-spacing:1px}.hero-divider{width:60px;height:2px;background:white;margin:0 auto 50px}.circle-buttons{display:flex;gap:30px;margin-bottom:80px;flex-wrap:wrap;justify-content:center}.circle-btn{width:200px;height:200px;border-radius:50%;border:2px solid rgba(255,255,255,0.4);background:rgba(0,0,0,0.05);backdrop-filter:blur(10px);color:white;font-size:18px;font-weight:600;cursor:pointer;transition:all .4s;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 16px rgba(0,0,0,0.3),0 4px 6px rgba(0,0,0,0.2),inset 0 1px 0 rgba(255,255,255,0.1)}.circle-btn:hover{background:rgba(0,0,0,0.1);border-color:rgba(255,255,255,0.6);transform:scale(1.05)translateY(-4px);box-shadow:0 16px 32px rgba(0,0,0,0.4)}.hero-footer{text-align:center;color:rgba(255,255,255,0.8);font-size:14px;line-height:1.8;max-width:500px;margin:0 auto}.press-btn{display:inline-flex;align-items:center;gap:10px;margin-top:20px;color:white;text-decoration:none;font-size:13px;letter-spacing:1px}.feed-section{background:linear-gradient(to bottom,#f8f9fa 0%,#ffffff 40%,#f5f5f5 100%);border-radius:2000px 2000px 0 0;margin-top:0;position:relative;padding:50px 20px 120px;box-shadow:0 -10px 30px rgba(0,0,0,0.15)}.profile-header{max-width:600px;margin:0 auto 40px;position:relative;display:flex;justify-content:center;align-items:center;min-height:80px}.profile-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#2d4a2e,#3d5a3e);display:flex;align-items:center;justify-content:center;position:absolute;left:20px;box-shadow:0 4px 12px rgba(0,0,0,0.2)}.profile-avatar svg{width:40px;height:40px;fill:white}.profile-text{text-align:center}.profile-text h2{font-size:36px;font-weight:700;color:#333;margin-bottom:5px}.profile-text p{font-size:18px;color:#999}.tabs{max-width:600px;margin:0 auto 30px;display:flex;justify-content:center;gap:10px;border-bottom:2px solid #e0e0e0}.tab{padding:12px 30px;background:none;border:none;font-size:16px;color:#999;cursor:pointer;transition:all .3s;position:relative}.tab.active{color:#333;font-weight:600}.tab.active::after{content:'';position:absolute;bottom:-2px;left:0;width:100%;height:3px;background:#333}.tab-content{display:none;max-width:600px;margin:0 auto}.tab-content.active{display:block;animation:fadeIn .5s}@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}.post-card{background:white;border-radius:20px;padding:25px;margin-bottom:20px;box-shadow:0 6px 20px rgba(0,0,0,0.12);transition:all .3s}.post-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,0.18)}.post-header{display:flex;align-items:center;gap:15px;margin-bottom:15px}.post-avatar{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(0,0,0,0.15)}.post-info h3{font-size:16px;font-weight:600;color:#333;margin-bottom:2px}.post-info p{font-size:13px;color:#999}.post-content{font-size:15px;line-height:1.6;color:#555;margin-bottom:20px}.post-actions{display:flex;gap:20px;padding-top:15px;border-top:1px solid #f0f0f0}.action-btn{display:flex;align-items:center;gap:8px;background:none;border:none;color:#999;font-size:14px;cursor:pointer;transition:all .3s;padding:8px 12px;border-radius:8px}.action-btn:hover{background:#f5f5f5;color:#333}.action-btn.liked{color:#e74c3c}.comments-section{margin-top:15px;padding-top:15px;border-top:1px solid #f0f0f0;display:none}.comments-section.active{display:block}.comment{display:flex;gap:10px;margin-bottom:12px;padding:10px;background:#f8f9fa;border-radius:10px}.comment-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}.comment-avatar svg{width:18px;height:18px}.comment-content{flex:1}.comment-author{font-size:13px;font-weight:600;color:#333;margin-bottom:3px}.comment-text{font-size:13px;color:#666;line-height:1.4}.comment-input-area{display:flex;gap:10px;margin-top:12px}.comment-input{flex:1;padding:10px 15px;border:1px solid #e0e0e0;border-radius:20px;font-size:13px;outline:none;transition:all .3s}.comment-input:focus{border-color:#6B9F6B;box-shadow:0 0 0 3px rgba(107,159,107,0.1)}.comment-submit{padding:10px 20px;background:#6B9F6B;color:white;border:none;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;transition:all .3s}.comment-submit:hover{background:#5a8a5a;transform:translateY(-1px)}.load-more-btn{width:100%;padding:15px;background:white;border:2px solid #e0e0e0;border-radius:20px;font-size:15px;font-weight:600;color:#666;cursor:pointer;transition:all .3s;margin-top:10px}.load-more-btn:hover{background:#f8f9fa;border-color:#6B9F6B;color:#6B9F6B;transform:translateY(-2px)}.canvas-container{width:100%;height:500px;position:relative;border-radius:20px;overflow:hidden;margin-bottom:20px;background:linear-gradient(135deg,#1a2e1a 0%,#2d4a2e 100%);box-shadow:0 8px 24px rgba(0,0,0,0.15)}#interactiveCanvas{display:block;width:100%;height:100%}.interactive-description{background:white;border-radius:20px;padding:30px;margin-top:20px;box-shadow:0 6px 20px rgba(0,0,0,0.12)}.interactive-description h3{font-size:28px;color:#2d4a2e;margin-bottom:20px;font-weight:600;text-align:center}.interactive-description p{font-size:15px;line-height:1.8;color:#666;margin-bottom:15px}.interactive-description p strong{color:#2d4a2e;font-weight:600}.interactive-features{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-top:25px}.feature-item{text-align:center;padding:25px 20px;background:rgba(45,74,46,0.1);border-radius:15px;transition:all .3s;border:1px solid rgba(45,74,46,0.2)}.feature-item:hover{background:rgba(45,74,46,0.15);transform:translateY(-3px)}.feature-icon{width:50px;height:50px;margin:0 auto 15px;background:rgba(45,74,46,0.85);border-radius:50%;display:flex;align-items:center;justify-content:center}.feature-icon svg{width:28px;height:28px}.feature-title{font-size:15px;font-weight:600;color:#2d4a2e;margin-bottom:8px}.feature-desc{font-size:13px;color:#666;line-height:1.5}
 
-        /* 산 풍경 배경 */
-        .mountain-bg {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 60%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
-            clip-path: polygon(0 40%, 25% 0, 50% 30%, 75% 10%, 100% 35%, 100% 100%, 0 100%);
-        }
+.animate-on-scroll{opacity:0;transform:translateY(50px);transition:all .8s cubic-bezier(0.4,0,0.2,1)}
+.animate-on-scroll.animated{opacity:1;transform:translateY(0)}
+.slide-in-left{opacity:0;transform:translateX(-80px);transition:all .9s cubic-bezier(0.34,1.56,0.64,1)}
+.slide-in-left.animated{opacity:1;transform:translateX(0)}
+.slide-in-right{opacity:0;transform:translateX(80px);transition:all .9s cubic-bezier(0.34,1.56,0.64,1)}
+.slide-in-right.animated{opacity:1;transform:translateX(0)}
+.scale-in{opacity:0;transform:scale(0.8);transition:all .7s cubic-bezier(0.34,1.56,0.64,1)}
+.scale-in.animated{opacity:1;transform:scale(1)}
+.rotate-in{opacity:0;transform:rotate(-10deg)scale(0.8);transition:all .8s cubic-bezier(0.34,1.56,0.64,1)}
+.rotate-in.animated{opacity:1;transform:rotate(0)scale(1)}
+.flip-in{opacity:0;transform:perspective(600px)rotateY(-90deg);transition:all .9s cubic-bezier(0.34,1.56,0.64,1)}
+.flip-in.animated{opacity:1;transform:perspective(600px)rotateY(0)}
 
-        .mountain-bg::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 80%;
-            background: rgba(255,255,255,0.08);
-            clip-path: polygon(0 50%, 35% 20%, 65% 45%, 100% 25%, 100% 100%, 0 100%);
-        }
+.info-hero{background:linear-gradient(135deg,#2d4a2e 0%,#1a2e1a 100%);border-radius:20px;padding:50px 30px;margin-bottom:30px;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,0.15);position:relative;overflow:hidden}
+.info-hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,0.1)0%,transparent 70%);animation:pulse 4s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.1);opacity:.8}}
+.info-hero-content{position:relative;z-index:1}
+.info-hero-content h2{font-size:42px;color:white;margin-bottom:15px;font-weight:700;text-shadow:0 4px 12px rgba(0,0,0,0.3)}
+.info-subtitle{font-size:18px;color:rgba(255,255,255,0.9);margin-bottom:20px;line-height:1.6}
+.team-badge{display:inline-block;background:rgba(255,255,255,0.2);color:white;padding:8px 24px;border-radius:25px;font-size:14px;font-weight:600;border:2px solid rgba(255,255,255,0.3);animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 
-        /* 구름 애니메이션 */
-        .clouds {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
+.info-section{background:white;border-radius:20px;padding:35px;margin-bottom:20px;box-shadow:0 6px 20px rgba(0,0,0,0.12);position:relative;overflow:hidden}
+.info-section::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent);transition:left .6s}
+.info-section:hover::before{left:100%}
+.section-header{display:flex;align-items:center;gap:15px;margin-bottom:25px;padding-bottom:20px;border-bottom:2px solid #f0f0f0}
+.section-icon{width:50px;height:50px;background:linear-gradient(135deg,#2d4a2e,#3d5a3e);border-radius:12px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(45,74,46,0.3);animation:iconRotate 3s ease-in-out infinite}
+@keyframes iconRotate{0%,100%{transform:rotate(0)scale(1)}50%{transform:rotate(5deg)scale(1.05)}}
+.section-icon svg{width:28px;height:28px}
+.section-header h3{font-size:26px;color:#2d4a2e;margin:0;font-weight:700}
+.section-content{font-size:15px;line-height:1.8;color:#666}
+.section-content p{margin-bottom:15px}
 
-        .cloud {
-            position: absolute;
-            background: rgba(255,255,255,0.15);
-            border-radius: 100px;
-            opacity: 0.8;
-        }
+.info-features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-bottom:20px}
+.info-feature-card{background:white;border-radius:16px;padding:25px;box-shadow:0 4px 12px rgba(0,0,0,0.08);border:1px solid #f0f0f0;transition:all .5s cubic-bezier(0.34,1.56,0.64,1);position:relative;overflow:hidden}
+.info-feature-card::after{content:'';position:absolute;top:0;right:0;width:0;height:0;border-style:solid;border-width:0 60px 60px 0;border-color:transparent #e8f5e9 transparent transparent;opacity:0;transition:all .4s}
+.info-feature-card:hover{transform:translateY(-8px)scale(1.02);box-shadow:0 16px 40px rgba(0,0,0,0.15)}
+.info-feature-card:hover::after{opacity:1}
+.feature-card-icon{width:60px;height:60px;background:linear-gradient(135deg,#2d4a2e,#3d5a3e);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:20px;box-shadow:0 4px 12px rgba(45,74,46,0.3);transition:all .4s}
+.info-feature-card:hover .feature-card-icon{transform:rotate(360deg)scale(1.1)}
+.feature-card-icon svg{width:32px;height:32px;transition:all .4s}
+.info-feature-card:hover .feature-card-icon svg{filter:drop-shadow(0 0 8px rgba(255,255,255,0.8))}
+.info-feature-card h4{font-size:18px;color:#2d4a2e;margin-bottom:10px;font-weight:600;transition:all .3s}
+.info-feature-card:hover h4{color:#1b5e20}
+.info-feature-card p{font-size:14px;line-height:1.6;color:#666;margin:0;transition:all .3s}
 
-        .cloud::before,
-        .cloud::after {
-            content: '';
-            position: absolute;
-            background: rgba(255,255,255,0.15);
-            border-radius: 100px;
-        }
+.stats-highlight{background:linear-gradient(135deg,#e8f5e9,#f1f8f4);border-left:4px solid #2d4a2e;padding:15px 20px;margin-top:12px;border-radius:8px;position:relative;overflow:hidden}
+.stats-highlight::before{content:'';position:absolute;top:0;left:-100%;width:200%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.6),transparent);animation:shimmer 3s infinite}
+@keyframes shimmer{0%{left:-100%}100%{left:100%}}
+.stats-highlight strong{color:#1b5e20;font-size:15px;display:block;margin-bottom:5px}
+.stats-highlight ul{margin:8px 0 0 20px;padding:0}
+.stats-highlight li{font-size:13px;color:#2d4a2e;line-height:1.6;margin-bottom:4px;opacity:0;animation:fadeInList .5s forwards}
+.stats-highlight li:nth-child(1){animation-delay:.1s}
+.stats-highlight li:nth-child(2){animation-delay:.2s}
+.stats-highlight li:nth-child(3){animation-delay:.3s}
+.stats-highlight li:nth-child(4){animation-delay:.4s}
+@keyframes fadeInList{to{opacity:1}}
 
-        .cloud1 {
-            width: 100px;
-            height: 40px;
-            top: 20%;
-            animation: float 30s infinite;
-        }
+.tech-stack-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:25px;margin-top:20px}
+.tech-category{background:#f8f9fa;padding:25px;border-radius:12px;border-left:4px solid #2d4a2e;transition:all .4s;position:relative;overflow:hidden}
+.tech-category::before{content:'';position:absolute;bottom:0;left:0;width:0;height:3px;background:linear-gradient(90deg,#2d4a2e,#6B9F6B);transition:width .6s}
+.tech-category:hover{background:#fff;transform:translateX(8px);box-shadow:0 8px 20px rgba(0,0,0,0.12)}
+.tech-category:hover::before{width:100%}
+.tech-category h4{font-size:18px;color:#2d4a2e;margin-bottom:15px;font-weight:600;transition:all .3s}
+.tech-category:hover h4{color:#1b5e20;transform:scale(1.05)}
+.tech-category ul{list-style:none;padding:0;margin:0}
+.tech-category li{font-size:14px;color:#666;padding:8px 0;padding-left:20px;position:relative;line-height:1.5;transition:all .3s}
+.tech-category li::before{content:'';position:absolute;left:0;top:14px;width:8px;height:8px;background:#2d4a2e;border-radius:50%;transition:all .3s}
+.tech-category:hover li{color:#333;padding-left:25px}
+.tech-category:hover li::before{width:12px;height:12px;box-shadow:0 0 10px rgba(45,74,46,0.6)}
 
-        .cloud1::before {
-            width: 50px;
-            height: 50px;
-            top: -25px;
-            left: 10px;
-        }
+.goal-items{display:grid;gap:20px;margin-top:25px}
+.goal-item{display:flex;gap:20px;align-items:flex-start;transition:all .4s}
+.goal-item:hover{transform:translateX(10px)}
+.goal-number{width:50px;height:50px;background:linear-gradient(135deg,#2d4a2e,#3d5a3e);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;flex-shrink:0;box-shadow:0 4px 12px rgba(45,74,46,0.3);position:relative}
+.goal-number::after{content:'';position:absolute;width:100%;height:100%;border-radius:50%;border:2px solid #2d4a2e;animation:ripple 2s infinite}
+@keyframes ripple{0%{transform:scale(1);opacity:1}100%{transform:scale(1.5);opacity:0}}
+.goal-content h4{font-size:18px;color:#2d4a2e;margin-bottom:8px;font-weight:600;transition:all .3s}
+.goal-item:hover .goal-content h4{color:#1b5e20}
+.goal-content p{font-size:14px;color:#666;line-height:1.6;margin:0}
 
-        .cloud1::after {
-            width: 60px;
-            height: 40px;
-            top: -15px;
-            right: 10px;
-        }
+.info-cta{background:linear-gradient(135deg,#2d4a2e 0%,#1a2e1a 100%);border-radius:20px;padding:40px;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,0.15);position:relative;overflow:hidden;animation:ctaPulse 3s ease-in-out infinite}
+@keyframes ctaPulse{0%,100%{box-shadow:0 8px 24px rgba(0,0,0,0.15),0 0 0 0 rgba(45,74,46,0.4)}50%{box-shadow:0 12px 32px rgba(0,0,0,0.25),0 0 0 20px rgba(45,74,46,0)}}
+.info-cta::before{content:'';position:absolute;top:50%;left:50%;width:300px;height:300px;background:radial-gradient(circle,rgba(255,255,255,0.1),transparent);transform:translate(-50%,-50%);animation:rotate 10s linear infinite}
+@keyframes rotate{from{transform:translate(-50%,-50%)rotate(0)}to{transform:translate(-50%,-50%)rotate(360deg)}}
+.info-cta h3{font-size:28px;color:white;margin-bottom:12px;font-weight:700;position:relative;z-index:1}
+.info-cta p{font-size:16px;color:rgba(255,255,255,0.9);margin:0;position:relative;z-index:1}
 
-        .cloud2 {
-            width: 80px;
-            height: 35px;
-            top: 40%;
-            animation: float 35s infinite reverse;
-        }
+.progress-bar{height:8px;background:#e0e0e0;border-radius:10px;overflow:hidden;margin-top:12px}
+.progress-fill{height:100%;background:linear-gradient(90deg,#2d4a2e,#6B9F6B);border-radius:10px;width:0;transition:width 1.5s cubic-bezier(0.4,0,0.2,1)}
 
-        .cloud2::before {
-            width: 40px;
-            height: 40px;
-            top: -20px;
-            left: 15px;
-        }
+.counter{font-size:36px;font-weight:700;color:#2d4a2e;line-height:1}
 
-        .cloud2::after {
-            width: 50px;
-            height: 35px;
-            top: -10px;
-            right: 15px;
-        }
+.parallax-bg{transform:translateZ(0);will-change:transform}
 
-        @keyframes float {
-            0% { transform: translateX(-100px); }
-            100% { transform: translateX(calc(100vw + 100px)); }
-        }
-
-        /* 별 애니메이션 */
-        .stars {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        .star {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle 4s infinite;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0; }
-            50% { opacity: 1; }
-        }
-
-        /* Hero Content */
-        .hero-content {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-            color: white;
-            padding: 0 20px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .hero-title {
-            font-size: clamp(36px, 8vw, 64px);
-            font-weight: 700;
-            margin-bottom: 20px;
-            animation: fadeInUp 1s ease;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .hero-subtitle {
-            font-size: clamp(20px, 4vw, 28px);
-            margin-bottom: 40px;
-            opacity: 0.95;
-            animation: fadeInUp 1s ease 0.2s backwards;
-            line-height: 1.4;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-            animation: fadeInUp 1s ease 0.4s backwards;
-        }
-
-        .hero-btn {
-            padding: 18px 40px;
-            font-size: 18px;
-            font-weight: 600;
-            border-radius: 50px;
-            text-decoration: none;
-            transition: all 0.3s;
-            display: inline-block;
-            min-width: 180px;
-        }
-
-        .hero-btn-primary {
-            background: white;
-            color: #667eea;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        .hero-btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-        }
-
-        .hero-btn-outline {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border: 2px solid white;
-            backdrop-filter: blur(10px);
-        }
-
-        .hero-btn-outline:hover {
-            background: white;
-            color: #667eea;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Features Section */
-        .features-section {
-            padding: 100px 0;
-            background: linear-gradient(180deg, #f7fafc 0%, #e2e8f0 100%);
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: clamp(32px, 5vw, 48px);
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .section-subtitle {
-            text-align: center;
-            font-size: 20px;
-            color: #718096;
-            margin-bottom: 60px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .feature-card {
-            background: white;
-            padding: 40px 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            text-align: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            transform: scaleX(0);
-            transition: transform 0.3s;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-        }
-
-        .feature-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .feature-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            color: white;
-            transition: all 0.3s;
-        }
-
-        .feature-card:hover .feature-icon {
-            transform: scale(1.1) rotate(5deg);
-        }
-
-        .feature-card h3 {
-            font-size: 24px;
-            margin-bottom: 15px;
-            color: #2d3748;
-        }
-
-        .feature-card p {
-            font-size: 16px;
-            color: #718096;
-            line-height: 1.6;
-        }
-
-        /* How It Works Section */
-        .how-section {
-            padding: 100px 0;
-            background: white;
-        }
-
-        .steps-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .step {
-            display: flex;
-            align-items: center;
-            gap: 40px;
-            margin-bottom: 60px;
-            opacity: 0;
-            animation: fadeIn 0.8s forwards;
-        }
-
-        .step:nth-child(even) {
-            flex-direction: row-reverse;
-        }
-
-        .step-number {
-            flex-shrink: 0;
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            font-weight: 700;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-        }
-
-        .step-content h3 {
-            font-size: 28px;
-            margin-bottom: 15px;
-            color: #2d3748;
-        }
-
-        .step-content p {
-            font-size: 18px;
-            color: #718096;
-            line-height: 1.6;
-        }
-
-        /* CTA Section */
-        .cta-section {
-            padding: 100px 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 200%;
-            height: 100%;
-            background: rgba(255,255,255,0.05);
-            transform: skewX(-20deg);
-            animation: shine 8s infinite;
-        }
-
-        @keyframes shine {
-            0% { left: -100%; }
-            50%, 100% { left: 100%; }
-        }
-
-        .cta-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .cta-title {
-            font-size: clamp(32px, 5vw, 48px);
-            color: white;
-            margin-bottom: 20px;
-        }
-
-        .cta-subtitle {
-            font-size: 20px;
-            color: rgba(255,255,255,0.9);
-            margin-bottom: 40px;
-        }
-
-        /* Footer */
-        .main-footer {
-            background: #2d3748;
-            color: white;
-            padding: 60px 0 30px;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .footer-section h3 {
-            margin-bottom: 20px;
-            color: white;
-        }
-
-        .footer-section p,
-        .footer-section a {
-            color: #cbd5e0;
-            text-decoration: none;
-            line-height: 1.8;
-        }
-
-        .footer-section a:hover {
-            color: #667eea;
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            color: #cbd5e0;
-        }
-
-        /* 반응형 */
-        @media (max-width: 768px) {
-            .hero-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .hero-btn {
-                width: 100%;
-                max-width: 300px;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .step {
-                flex-direction: column !important;
-                text-align: center;
-            }
-        }
-    </style>
+.main-footer{background:#2d4a2e;color:white;padding:60px 20px 30px}.footer-container{max-width:1200px;margin:0 auto}.footer-brand{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:50px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,0.15)}.footer-brand-left{flex:1}.footer-logo{font-size:28px;font-weight:700;color:white;margin-bottom:10px}.footer-slogan{font-size:14px;color:rgba(255,255,255,0.8);margin-bottom:20px;line-height:1.6}.app-download-btns{display:flex;gap:12px;margin-bottom:15px}.app-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.3);border-radius:8px;color:white;text-decoration:none;font-size:13px;font-weight:600;transition:all .3s}.app-btn:hover{background:rgba(255,255,255,0.2);transform:translateY(-2px)}.trust-badges{display:flex;gap:15px;margin-top:15px;flex-wrap:wrap}.trust-badge{display:flex;align-items:center;gap:6px;font-size:11px;color:rgba(255,255,255,0.7);background:rgba(255,255,255,0.05);padding:6px 12px;border-radius:6px}.footer-links{display:grid;grid-template-columns:repeat(4,1fr);gap:40px;margin-bottom:40px}.footer-column h4{font-size:16px;font-weight:600;color:white;margin-bottom:15px}.footer-column ul{list-style:none;padding:0;margin:0}.footer-column li{margin-bottom:10px}.footer-column a{color:rgba(255,255,255,0.7);text-decoration:none;font-size:14px;transition:all .3s}.footer-column a:hover{color:white;padding-left:4px}.footer-newsletter{background:rgba(255,255,255,0.05);padding:25px;border-radius:12px;margin-bottom:40px}.footer-newsletter h4{font-size:16px;color:white;margin-bottom:10px}.footer-newsletter p{font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:15px}.newsletter-form{display:flex;gap:10px}.newsletter-input{flex:1;padding:12px 16px;border:1px solid rgba(255,255,255,0.2);border-radius:8px;background:rgba(255,255,255,0.1);color:white;font-size:14px;outline:none}.newsletter-input::placeholder{color:rgba(255,255,255,0.5)}.newsletter-submit{padding:12px 24px;background:white;color:#2d4a2e;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:all .3s}.newsletter-submit:hover{background:rgba(255,255,255,0.9);transform:translateY(-2px)}.footer-meta{display:flex;justify-content:space-between;align-items:center;padding-top:30px;border-top:1px solid rgba(255,255,255,0.15)}.footer-meta-left{display:flex;gap:30px;align-items:center}.social-links{display:flex;gap:12px}.social-link{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;color:white;transition:all .3s;text-decoration:none}.social-link:hover{background:rgba(255,255,255,0.2);transform:translateY(-2px)}.contact-info{font-size:12px;color:rgba(255,255,255,0.7)}.contact-info a{color:rgba(255,255,255,0.7);text-decoration:none}.contact-info a:hover{color:white}.footer-meta-right{text-align:right}.business-info{font-size:12px;color:rgba(255,255,255,0.6);line-height:1.6;margin-bottom:10px}.copyright{font-size:12px;color:rgba(255,255,255,0.5)}
+@media(max-width:768px){.hero{padding:30px 15px 80px}.hero-title{font-size:28px;margin-bottom:30px}.circle-buttons{gap:20px}.circle-btn{width:150px;height:150px;font-size:16px}.profile-header{flex-direction:column;text-align:center}.profile-avatar{position:static;margin-bottom:20px}.tabs{gap:5px}.tab{padding:10px 20px;font-size:14px}.canvas-container{height:400px}.info-hero{padding:35px 20px}.info-hero-content h2{font-size:32px}.info-subtitle{font-size:16px}.info-features-grid{grid-template-columns:1fr}.tech-stack-grid{grid-template-columns:1fr}.section-header{flex-direction:column;text-align:center}.section-icon{margin-bottom:10px}.footer-brand{flex-direction:column}.footer-links{grid-template-columns:1fr;gap:30px}.footer-meta{flex-direction:column;gap:20px;text-align:center}.footer-meta-left{flex-direction:column;gap:15px}.footer-meta-right{text-align:center}.app-download-btns{flex-direction:column}}
+</style>
 </head>
 <body>
-    <!-- Hero Section with Landscape Design -->
-    <section class="hero-section">
-        <!-- 별 배경 -->
-        <div class="stars">
-            <div class="star" style="top: 10%; left: 20%; animation-delay: 0s;"></div>
-            <div class="star" style="top: 20%; left: 80%; animation-delay: 1s;"></div>
-            <div class="star" style="top: 30%; left: 60%; animation-delay: 2s;"></div>
-            <div class="star" style="top: 15%; left: 40%; animation-delay: 3s;"></div>
-            <div class="star" style="top: 25%; left: 70%; animation-delay: 1.5s;"></div>
-        </div>
+<section class="hero">
+<div class="top-bar">
+<a href="#" class="logo">먹었약</a>
+<div class="login-section">
+<a href="#" class="login-btn">로그인</a>
+<a href="#" class="signup-btn">회원가입</a>
+</div>
+</div>
+<div class="hero-content">
+<h1 class="hero-title">당신의 건강을 위한<br>스마트한 선택</h1>
+<div class="hero-divider"></div>
+<div class="circle-buttons">
+<button class="circle-btn">복약 알림</button>
+<button class="circle-btn">약통 현황</button>
+<button class="circle-btn">복용 기록</button>
+</div>
+<div class="hero-footer">
+<p>스마트 약통은 사물인터넷 기술을 활용하여<br>당신의 건강한 복약 습관을 만들어갑니다.</p>
+<a href="#feed" class="press-btn">시작하기 <span>↓</span></a>
+</div>
+</div>
+</section>
 
-        <!-- 구름 -->
-        <div class="clouds">
-            <div class="cloud cloud1"></div>
-            <div class="cloud cloud2"></div>
-        </div>
+<section class="feed-section" id="feed">
+<div class="profile-header">
+<div class="profile-avatar">
+<svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+</div>
+<div class="profile-text">
+<h2>먹었약</h2>
+<p>Smart Pill Management</p>
+</div>
+</div>
 
-        <!-- 산 배경 -->
-        <div class="mountain-bg"></div>
+<div class="tabs">
+<button class="tab active" data-tab="feed">피드</button>
+<button class="tab" data-tab="interactive">인터랙티브</button>
+<button class="tab" data-tab="info">정보</button>
+</div>
 
-        <!-- Hero Content -->
-        <div class="hero-content">
-            <h1 class="hero-title">💊 스마트 약통 시스템</h1>
-            <p class="hero-subtitle">
-                IoT 센서와 AI 기반 알림으로<br>
-                정확한 시간에 약을 복용할 수 있도록 도와드립니다
-            </p>
-            <div class="hero-buttons">
-                <a href="/register" class="hero-btn hero-btn-primary">
-                    시작하기
-                </a>
-                <a href="#features" class="hero-btn hero-btn-outline">
-                    더 알아보기
-                </a>
-            </div>
-        </div>
-    </section>
+<div id="feed-content" class="tab-content active"></div>
 
-    <!-- Features Section -->
-    <section id="features" class="features-section">
-        <div class="container">
-            <h2 class="section-title">주요 기능</h2>
-            <p class="section-subtitle">
-                스마트한 약 복용 관리로 건강한 일상을 만들어갑니다
-            </p>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">📡</div>
-                    <h3>IoT 센서 연동</h3>
-                    <p>Arduino R4 WiFi와 적외선 센서로 약 복용을 자동 감지하고 실시간으로 기록합니다</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">⏰</div>
-                    <h3>스마트 알림</h3>
-                    <p>개인별 복용 스케줄에 맞춰 정확한 시간에 알림을 보내드립니다</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3>복용 통계 분석</h3>
-                    <p>일별, 주별, 월별 복용률을 분석하여 건강 관리를 도와드립니다</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">👨‍👩‍👧</div>
-                    <h3>보호자 케어</h3>
-                    <p>가족이나 의료진과 복용 정보를 실시간으로 공유할 수 있습니다</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📝</div>
-                    <h3>건강 일지</h3>
-                    <p>혈압, 혈당, 체중 등 건강 지표를 기록하고 추이를 분석합니다</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔔</div>
-                    <h3>맞춤형 관리</h3>
-                    <p>복용 패턴을 분석하여 개인별 최적화된 관리 방안을 제시합니다</p>
-                </div>
-            </div>
-        </div>
-    </section>
+<div id="interactive-content" class="tab-content">
+<div class="post-card" style="padding:0;overflow:hidden">
+<div class="canvas-container"><canvas id="interactiveCanvas"></canvas></div>
+</div>
+<div class="interactive-description">
+<h3>🎨 인터랙티브 파티클 아트</h3>
+<p><strong>왜 스마트 약통 홈페이지에 인터랙티브 아트가 필요할까요?</strong></p>
+<p>스마트 약통은 단순한 약통이 아닙니다. 수많은 IoT 센서들이 실시간으로 데이터를 주고받으며, 사용자와 가족, 의료진이 하나의 네트워크로 연결되는 <strong>생명을 지키는 연결망</strong>입니다.</p>
+<p>이 인터랙티브 아트는 시스템의 핵심 철학을 시각화합니다. 마우스를 움직일 때마다 생성되는 수백 개의 파티클은 <strong>실시간으로 흐르는 건강 데이터</strong>를, 파티클 간의 연결선은 <strong>환자-가족-의료진의 유기적 연결</strong>을 상징합니다.</p>
+<div class="interactive-features">
+<div class="feature-item">
+<div class="feature-icon">
+<svg viewBox="0 0 24 24" fill="white"><path d="M13 1.07V9h7c0-4.08-3.05-7.44-7-7.93zM4 15c0 4.42 3.58 8 8 8s8-3.58 8-8v-4H4v4zm7-13.93C7.05 1.56 4 4.92 4 9h7V1.07z"/></svg>
+</div>
+<div class="feature-title">마우스 트래킹</div>
+<div class="feature-desc">실시간 데이터 흐름을 표현하는 파티클 생성</div>
+</div>
+<div class="feature-item">
+<div class="feature-icon">
+<svg viewBox="0 0 24 24" fill="white"><path d="M9 11.24V7.5C9 6.12 10.12 5 11.5 5S14 6.12 14 7.5v3.74c1.21-.81 2-2.18 2-3.74C16 5.01 13.99 3 11.5 3S7 5.01 7 7.5c0 1.56.79 2.93 2 3.74zm9.84 4.63l-4.54-2.26c-.17-.07-.35-.11-.54-.11H13v-6c0-.83-.67-1.5-1.5-1.5S10 6.67 10 7.5v10.74l-3.43-.72c-.08-.01-.15-.03-.24-.03-.31 0-.59.13-.79.33l-.79.8 4.94 4.94c.27.27.65.44 1.06.44h6.79c.75 0 1.33-.55 1.44-1.28l.75-5.27c.01-.07.02-.14.02-.2 0-.62-.38-1.16-.91-1.38z"/></svg>
+</div>
+<div class="feature-title">터치 지원</div>
+<div class="feature-desc">모바일에서도 직관적인 상호작용</div>
+</div>
+<div class="feature-item">
+<div class="feature-icon">
+<svg viewBox="0 0 24 24" fill="white"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+</div>
+<div class="feature-title">파티클 효과</div>
+<div class="feature-desc">물리 기반 알고리즘으로 자연스러운 움직임</div>
+</div>
+<div class="feature-item">
+<div class="feature-icon">
+<svg viewBox="0 0 24 24" fill="white"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+</div>
+<div class="feature-title">녹색 테마</div>
+<div class="feature-desc">생명과 건강을 상징하는 색상 그라데이션</div>
+</div>
+</div>
+</div>
+</div>
 
-    <!-- How It Works Section -->
-    <section class="how-section">
-        <div class="container">
-            <h2 class="section-title">이용 방법</h2>
-            <p class="section-subtitle">
-                간단한 3단계로 스마트한 약 복용 관리를 시작하세요
-            </p>
-            <div class="steps-container">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h3>스마트 약통 설치</h3>
-                        <p>Arduino 기반 스마트 약통을 WiFi에 연결하고, 웹 서비스에 등록합니다. 7개의 약통 칸에 약을 보관할 수 있습니다.</p>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h3>약품 정보 등록</h3>
-                        <p>복용 중인 약품 정보와 복용 시간을 등록하면, 자동으로 알림 스케줄이 생성됩니다.</p>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h3>자동 모니터링</h3>
-                        <p>센서가 약통 개폐를 감지하여 복용 여부를 자동 기록하고, 대시보드에서 실시간으로 확인할 수 있습니다.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<div id="info-content" class="tab-content">
+<div class="info-hero scale-in">
+<div class="info-hero-content">
+<h2>스마트 약통</h2>
+<p class="info-subtitle">건강한 내일을 위한 IoT 기반 복약 관리 솔루션</p>
+<div class="team-badge">Team 먹었약</div>
+</div>
+</div>
 
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-content">
-                <h2 class="cta-title">지금 바로 시작하세요!</h2>
-                <p class="cta-subtitle">
-                    건강한 약 복용 습관, 스마트 약통과 함께 만들어가세요
-                </p>
-                <a href="/register" class="hero-btn hero-btn-primary">
-                    무료로 시작하기
-                </a>
-            </div>
-        </div>
-    </section>
+<div class="info-section animate-on-scroll">
+<div class="section-header">
+<div class="section-icon">
+<svg viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+</div>
+<h3>핵심 기능</h3>
+</div>
+<div class="info-features-grid">
 
-    <!-- Footer -->
-    <footer class="main-footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>스마트 약통</h3>
-                <p>IoT와 AI 기술로 만드는<br>건강한 약 복용 문화</p>
-                <p style="margin-top: 15px;">© 2025 LogiSave Team</p>
-            </div>
-            <div class="footer-section">
-                <h3>빠른 링크</h3>
-                <p><a href="/login">로그인</a></p>
-                <p><a href="/register">회원가입</a></p>
-                <p><a href="/dashboard">대시보드</a></p>
-                <p><a href="#features">기능 소개</a></p>
-            </div>
-            <div class="footer-section">
-                <h3>문의하기</h3>
-                <p>이메일: support@smartmedicinebox.com</p>
-                <p>전화: 1588-1234</p>
-                <p>운영시간: 평일 9:00 - 18:00</p>
-            </div>
-            <div class="footer-section">
-                <h3>기술 스택</h3>
-                <p>Arduino R4 WiFi</p>
-                <p>Node.js / Express</p>
-                <p>MariaDB / Cloudtype</p>
-                <p>Socket.io / Chart.js</p>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>2025 AI·SW융합 경진대회 출품작 | Team LogiSave</p>
-        </div>
-    </footer>
+<div class="info-feature-card slide-in-left" style="transition-delay:0.1s">
+<div class="feature-card-icon">
+<svg viewBox="0 0 24 24" fill="white"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
+</div>
+<h4>IoT 센서 연동</h4>
+<p>Arduino R4 WiFi와 적외선 센서로 약 복용을 자동 감지하고 실시간으로 기록합니다</p>
+</div>
 
-    <script src="/js/common.js"></script>
-    <script>
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
+<div class="info-feature-card slide-in-right" style="transition-delay:0.2s">
+<div class="feature-card-icon">
+<svg viewBox="0 0 24 24" fill="white"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+</div>
+<h4>스마트 알림</h4>
+<p>개인별 복용 스케줄에 맞춰 정확한 시간에 알림을 보내드립니다</p>
+</div>
 
-        // Intersection Observer for animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
+<div class="info-feature-card slide-in-left" style="transition-delay:0.3s">
+<div class="feature-card-icon">
+<svg viewBox="0 0 24 24" fill="white"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+</div>
+<h4>복용 통계 분석</h4>
+<p>일별, 주별, 월별 복용률을 분석하여 건강 관리를 도와드립니다</p>
+<div class="stats-highlight">
+<strong>높은 접근성의 데이터 시각화</strong>
+<ul>
+<li>직관적인 그래프와 차트로 한눈에 파악</li>
+<li>대형 폰트와 명확한 색상 대비</li>
+<li>음성 안내 기능 지원</li>
+<li>단순하고 명확한 UI/UX 설계</li>
+</ul>
+</div>
+</div>
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animationPlayState = 'running';
-                }
-            });
-        }, observerOptions);
+<div class="info-feature-card slide-in-right" style="transition-delay:0.4s">
+<div class="feature-card-icon">
+<svg viewBox="0 0 24 24" fill="white"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+</div>
+<h4>보호자 케어</h4>
+<p>가족이나 의료진과 복용 정보를 실시간으로 공유할 수 있습니다</p>
+</div>
 
-        document.querySelectorAll('.step').forEach((step, index) => {
-            step.style.animationDelay = `${index * 0.2}s`;
-            step.style.animationPlayState = 'paused';
-            observer.observe(step);
-        });
+<div class="info-feature-card slide-in-left" style="transition-delay:0.5s">
+<div class="feature-card-icon">
+<svg viewBox="0 0 24 24" fill="white"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+</div>
+<h4>건강 일지</h4>
+<p>혈압, 혈당, 체중 등 건강 지표를 기록하고 추이를 분석합니다</p>
+</div>
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </script>
+<div class="info-feature-card slide-in-right" style="transition-delay:0.6s">
+<div class="feature-card-icon">
+<svg viewBox="0 0 24 24" fill="white"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+</div>
+<h4>맞춤형 관리</h4>
+<p>복용 패턴을 분석하여 개인별 최적화된 관리 방안을 제시합니다</p>
+</div>
+
+</div>
+</div>
+
+<div class="info-section animate-on-scroll">
+<div class="section-header">
+<div class="section-icon">
+<svg viewBox="0 0 24 24" fill="white"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
+</div>
+<h3>기술 스택</h3>
+</div>
+<div class="tech-stack-grid">
+<div class="tech-category flip-in" style="transition-delay:0.1s">
+<h4>하드웨어</h4>
+<ul>
+<li>Arduino R4 WiFi</li>
+<li>적외선 센서</li>
+<li>무게 센서</li>
+<li>Wi-Fi/Bluetooth 통신</li>
+<li>저전력 배터리 시스템</li>
+</ul>
+</div>
+<div class="tech-category flip-in" style="transition-delay:0.2s">
+<h4>백엔드</h4>
+<ul>
+<li>Node.js + Express</li>
+<li>MariaDB 데이터베이스</li>
+<li>RESTful API</li>
+<li>JWT 인증</li>
+</ul>
+</div>
+<div class="tech-category flip-in" style="transition-delay:0.3s">
+<h4>프론트엔드</h4>
+<ul>
+<li>Responsive Web Design</li>
+<li>JavaScript ES6+</li>
+<li>Canvas API</li>
+<li>CSS3 Animations</li>
+<li>WCAG 2.1 접근성 준수</li>
+</ul>
+</div>
+<div class="tech-category flip-in" style="transition-delay:0.4s">
+<h4>인프라</h4>
+<ul>
+<li>Cloudtype 호스팅</li>
+<li>GitHub CI/CD</li>
+<li>WebSocket 실시간 통신</li>
+<li>AES-256 암호화</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="info-section animate-on-scroll">
+<div class="section-header">
+<div class="section-icon">
+<svg viewBox="0 0 24 24" fill="white"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+</div>
+<h3>프로젝트 목표</h3>
+</div>
+<div class="section-content">
+<p>스마트 약통은 고령화 사회의 복약 관리 문제를 해결하고자 합니다. 현재 65세 이상 노인의 90% 이상이 만성 질환을 앓고 있으며, 복약 순응도는 50%에 불과합니다.</p>
+<div class="goal-items">
+<div class="goal-item rotate-in" style="transition-delay:0.1s">
+<div class="goal-number">01</div>
+<div class="goal-content">
+<h4>복약 순응도 향상</h4>
+<p>정확한 알림과 자동 기록으로 복약 순응도를 90% 이상으로 개선</p>
+</div>
+</div>
+<div class="goal-item rotate-in" style="transition-delay:0.2s">
+<div class="goal-number">02</div>
+<div class="goal-content">
+<h4>가족 케어 지원</h4>
+<p>원격 모니터링으로 떨어져 사는 가족의 건강을 실시간으로 확인</p>
+</div>
+</div>
+<div class="goal-item rotate-in" style="transition-delay:0.3s">
+<div class="goal-number">03</div>
+<div class="goal-content">
+<h4>의료진 연계</h4>
+<p>복약 데이터를 의료진과 공유하여 더 정확한 진료와 처방 가능</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="info-cta scale-in">
+<h3>먹었약 팀과 함께 건강한 내일을 만들어가세요</h3>
+<p>스마트 약통은 단순한 제품이 아닌, 생명을 지키는 기술입니다</p>
+</div>
+</div>
+</section>
+
+<footer class="main-footer">
+<div class="footer-container">
+<div class="footer-brand">
+<div class="footer-brand-left">
+<div class="footer-logo">먹었약</div>
+<p class="footer-slogan">스마트 약 복용 알림과 기록을 더 쉽고 안전하게</p>
+<div class="app-download-btns">
+<a href="#" class="app-btn" aria-label="앱스토어에서 먹었약 앱 다운로드">
+<span>🍎</span> App Store
+</a>
+<a href="#" class="app-btn" aria-label="구글플레이에서 먹었약 앱 다운로드">
+<span>▶</span> Google Play
+</a>
+</div>
+<div class="trust-badges">
+<div class="trust-badge">✓ 의료기기 인증</div>
+<div class="trust-badge">✓ 국내특허</div>
+<div class="trust-badge">✓ 병원 협력</div>
+</div>
+</div>
+</div>
+
+<div class="footer-links">
+<div class="footer-column">
+<h4>제품</h4>
+<ul>
+<li><a href="#">기능소개</a></li>
+<li><a href="#">사용방법</a></li>
+<li><a href="#">요금안내</a></li>
+<li><a href="#">앱 업데이트</a></li>
+</ul>
+</div>
+<div class="footer-column">
+<h4>고객지원</h4>
+<ul>
+<li><a href="#">자주 묻는 질문</a></li>
+<li><a href="#">문의하기</a></li>
+<li><a href="#">사용자 가이드</a></li>
+<li><a href="#">오류신고</a></li>
+</ul>
+</div>
+<div class="footer-column">
+<h4>회사</h4>
+<ul>
+<li><a href="#">회사소개</a></li>
+<li><a href="#">채용정보</a></li>
+<li><a href="#">파트너</a></li>
+<li><a href="#">보도자료</a></li>
+</ul>
+</div>
+<div class="footer-column">
+<h4>법률</h4>
+<ul>
+<li><a href="#">개인정보처리방침</a></li>
+<li><a href="#">이용약관</a></li>
+<li><a href="#">의료정보 고지</a></li>
+</ul>
+</div>
+</div>
+
+<div class="footer-newsletter">
+<h4>뉴스레터 구독</h4>
+<p>최신 건강 정보와 제품 소식을 받아보세요</p>
+<form class="newsletter-form" onsubmit="return false;">
+<input type="email" class="newsletter-input" placeholder="이메일을 입력하세요" aria-label="이메일 주소">
+<button type="submit" class="newsletter-submit">구독하기</button>
+</form>
+</div>
+
+<div class="footer-meta">
+<div class="footer-meta-left">
+<div class="social-links">
+<a href="#" class="social-link" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+<a href="#" class="social-link" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg></a>
+<a href="#" class="social-link" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+<a href="#" class="social-link" aria-label="Blog"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg></a>
+</div>
+<div class="contact-info">
+<p><a href="mailto:support@meogeosyak.kr">support@meogeosyak.kr</a> | <a href="tel:02-123-4567">02-123-4567</a></p>
+<p>운영시간: 평일 09:00–18:00</p>
+</div>
+</div>
+<div class="footer-meta-right">
+<div class="business-info">
+주식회사 먹었약 | 사업자등록번호 123-45-67890<br>
+대표: 임병현 | 서울특별시 강남구
+</div>
+<div class="copyright">© 2025 MeogeosYak. All rights reserved.</div>
+</div>
+</div>
+</div>
+</footer>
+
+<script>
+const gc=['linear-gradient(135deg,#2d5016,#3d6a1e)','linear-gradient(135deg,#1b5e20,#2e7d32)','linear-gradient(135deg,#33691e,#558b2f)','linear-gradient(135deg,#1a4d2e,#2e7c67)','linear-gradient(135deg,#0d5302,#146b3a)','linear-gradient(135deg,#165b33,#0a4d2e)','linear-gradient(135deg,#234d20,#376a36)','linear-gradient(135deg,#2c5530,#43713e)'];
+const ic=['<svg viewBox="0 0 24 24" fill="white" width="28" height="28"><circle cx="12" cy="12" r="8"/></svg>','<svg viewBox="0 0 24 24" fill="white" width="28" height="28"><rect x="6" y="6" width="12" height="12"/></svg>','<svg viewBox="0 0 24 24" fill="white" width="28" height="28"><polygon points="12,4 20,20 4,20"/></svg>','<svg viewBox="0 0 24 24" fill="white" width="28" height="28"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>','<svg viewBox="0 0 24 24" fill="white" width="28" height="28"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>','<svg viewBox="0 0 24 24" fill="white" width="28" height="28"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>','<svg viewBox="0 0 24 24" fill="white" width="28" height="28"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>','<svg viewBox="0 0 24 24" fill="white" width="28" height="28"><circle cx="12" cy="8" r="4"/><path d="M12 14c-6 0-8 3-8 3v2h16v-2s-2-3-8-3z"/></svg>','<svg viewBox="0 0 24 24" fill="white" width="28" height="28"><polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9"/></svg>'];
+const posts=[{name:"김건강",time:"1시간 전",content:"오늘도 스마트 약통 덕분에 약을 제때 챙겨 먹었어요! 알림 기능이 정말 유용합니다 👍",likes:0,comments:[]},{name:"이안심",time:"3시간 전",content:"부모님 약 관리가 걱정이었는데 먹었약으로 원격으로 확인할 수 있어서 정말 안심이 됩니다.",likes:0,comments:[]},{name:"박스마트",time:"5시간 전",content:"IoT 기술과 건강 관리의 완벽한 조합! 먹었약은 미래형 헬스케어 솔루션입니다. 🚀",likes:0,comments:[]},{name:"최웰빙",time:"7시간 전",content:"복약 기록이 자동으로 저장되니까 병원 갈 때 정말 편해요. 의사 선생님도 만족하십니다!",likes:0,comments:[]},{name:"정케어",time:"9시간 전",content:"할머니께서 약 드시는 걸 자주 깜빡하셨는데, 스마트 약통 설치하고 나서는 한 번도 빠뜨린 적이 없어요 ❤️",likes:0,comments:[]},{name:"강헬스",time:"12시간 전",content:"약통 잔량까지 확인해주니까 약국 갈 타이밍을 놓치지 않아요. 정말 똑똑한 시스템!",likes:0,comments:[]},{name:"윤라이프",time:"15시간 전",content:"가족들이 모두 먹었약을 쓰고 있어요. 서로의 건강을 챙길 수 있어서 좋습니다 💚",likes:0,comments:[]},{name:"임메디",time:"18시간 전",content:"인터페이스가 직관적이고 사용하기 쉬워요. 노인분들도 금방 익숙해지실 것 같아요!",likes:0,comments:[]},{name:"한테크",time:"21시간 전",content:"스마트 약통의 새로운 기준! 먹었약은 정말 혁신적인 제품입니다 ✨",likes:0,comments:[]},{name:"신케어",time:"1일 전",content:"복약 알림을 가족들과 공유할 수 있어서 좋아요. 서로 챙겨주는 느낌이 듭니다.",likes:0,comments:[]},{name:"문웰니스",time:"1일 전",content:"디자인도 예쁘고 기능도 완벽해요. 집에 두기 좋은 스마트 디바이스입니다 🏠",likes:0,comments:[]},{name:"류스마일",time:"1일 전",content:"앱에서 복약 통계를 볼 수 있어서 제 건강 관리에 큰 도움이 됩니다!",likes:0,comments:[]},{name:"오가드",time:"2일 전",content:"여행 갈 때도 걱정 없어요. 알림이 정확하게 와서 어디서든 약을 챙길 수 있어요 ✈️",likes:0,comments:[]},{name:"홍세이프",time:"2일 전",content:"의료진과 데이터를 공유할 수 있는 기능이 정말 유용합니다. 진료가 더 정확해졌어요!",likes:0,comments:[]},{name:"남프로",time:"2일 전",content:"먹었약 추천받아서 쓰기 시작했는데, 이제는 주변에 제가 추천하고 다닙니다! 💯",likes:0,comments:[]}];
+let vis=5;
+function rF(){const f=document.getElementById('feed-content');f.innerHTML='';posts.slice(0,vis).forEach((p,i)=>{const c=document.createElement('div');c.className='post-card';c.dataset.index=i;c.innerHTML=`<div class="post-header"><div class="post-avatar" style="background:${gc[i%gc.length]}">${ic[i%ic.length]}</div><div class="post-info"><h3>${p.name}</h3><p>${p.time}</p></div></div><div class="post-content">${p.content}</div><div class="post-actions"><button class="action-btn like-btn" onclick="like(${i})"><span>❤️</span><span class="like-count">좋아요 ${p.likes}</span></button><button class="action-btn comment-btn" onclick="tC(${i})"><span>💬</span><span>댓글 ${p.comments.length}</span></button></div><div class="comments-section" id="c-${i}"><div class="comments-list" id="cl-${i}">${rC(p.comments,i)}</div><div class="comment-input-area"><input type="text" class="comment-input" placeholder="댓글을 입력하세요..." id="ci-${i}"><button class="comment-submit" onclick="aC(${i})">작성</button></div></div>`;f.appendChild(c)});if(vis<posts.length){const b=document.createElement('button');b.className='load-more-btn';b.textContent='더보기';b.onclick=()=>{vis=posts.length;rF()};f.appendChild(b)}}
+function rC(cs,pi){return cs.map((c,i)=>`<div class="comment"><div class="comment-avatar" style="background:${gc[i%gc.length]}">${ic[(i+3)%ic.length]}</div><div class="comment-content"><div class="comment-author">${c.author}</div><div class="comment-text">${c.text}</div></div></div>`).join('')}
+function like(i){posts[i].likes++;const b=document.querySelector(`[data-index="${i}"] .like-btn`);b.classList.add('liked');b.querySelector('.like-count').textContent=`좋아요 ${posts[i].likes}`}
+function tC(i){document.getElementById(`c-${i}`).classList.toggle('active')}
+function aC(i){const inp=document.getElementById(`ci-${i}`);if(!inp.value.trim())return;const ns=['김댓글','이리플','박코멘트','최반응','정소통','강메시지'];posts[i].comments.push({author:ns[Math.floor(Math.random()*ns.length)],text:inp.value});document.getElementById(`cl-${i}`).innerHTML=rC(posts[i].comments,i);document.querySelector(`[data-index="${i}"] .comment-btn span:last-child`).textContent=`댓글 ${posts[i].comments.length}`;inp.value=''}
+document.addEventListener('keypress',e=>{if(e.target.classList.contains('comment-input')&&e.key==='Enter'){aC(parseInt(e.target.id.split('-')[1]))}});
+document.querySelectorAll('.tab').forEach(t=>{t.addEventListener('click',function(){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));this.classList.add('active');document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));document.getElementById(`${this.dataset.tab}-content`).classList.add('active');if(this.dataset.tab==='info'){setTimeout(()=>{initScrollAnimations()},100)}})});
+document.querySelectorAll('.circle-btn').forEach(b=>{b.addEventListener('click',function(){this.style.background='rgba(255,255,255,0.2)';setTimeout(()=>{this.style.background='rgba(255,255,255,0.05)'},200)})});
+const cv=document.getElementById('interactiveCanvas');if(cv){const ct=cv.getContext('2d');function rsz(){cv.width=cv.parentElement.offsetWidth;cv.height=cv.parentElement.offsetHeight}rsz();window.addEventListener('resize',rsz);let mx=cv.width/2,my=cv.height/2,act=false;function upM(e){const r=cv.getBoundingClientRect();if(e.touches){mx=e.touches[0].clientX-r.left;my=e.touches[0].clientY-r.top}else{mx=e.clientX-r.left;my=e.clientY-r.top}}cv.addEventListener('mousemove',e=>{upM(e);act=true});cv.addEventListener('touchmove',e=>{e.preventDefault();upM(e);act=true});cv.addEventListener('mouseleave',()=>act=false);cv.addEventListener('click',e=>{upM(e);exp(mx,my)});cv.addEventListener('touchstart',e=>{e.preventDefault();upM(e);exp(mx,my)});class Particle{constructor(x,y,m=1){this.x=x;this.y=y;this.vx=(Math.random()-.5)*4*m;this.vy=(Math.random()-.5)*4*m;this.size=Math.random()*3+1;this.life=1;this.decay=Math.random()*.01+.005;const cls=[{h:120,s:60,l:50},{h:130,s:55,l:55},{h:140,s:50,l:60},{h:110,s:65,l:45},{h:150,s:45,l:55}];const c=cls[Math.floor(Math.random()*cls.length)];this.hue=c.h;this.sat=c.s;this.light=c.l}update(){this.x+=this.vx;this.y+=this.vy;this.life-=this.decay;this.vy+=.05;this.vx*=.99;this.vy*=.99}draw(){if(this.life<=0)return;const g=ct.createRadialGradient(this.x,this.y,0,this.x,this.y,this.size*3);g.addColorStop(0,`hsla(${this.hue},${this.sat}%,${this.light}%,${this.life*.8})`);g.addColorStop(1,`hsla(${this.hue},${this.sat}%,${this.light}%,0)`);ct.fillStyle=g;ct.beginPath();ct.arc(this.x,this.y,this.size*3,0,Math.PI*2);ct.fill();ct.beginPath();ct.arc(this.x,this.y,this.size,0,Math.PI*2);ct.fillStyle=`hsla(${this.hue},${this.sat+10}%,${this.light+10}%,${this.life})`;ct.fill()}}const ps=[];const mP=300;let lt=0;function crP(){const n=Date.now();if(act&&n-lt>30&&ps.length<mP){ps.push(new Particle(mx,my,.5));lt=n}}function exp(x,y){for(let i=0;i<30;i++){if(ps.length<mP)ps.push(new Particle(x,y,2))}}function ani(){ct.fillStyle='rgba(26,46,26,0.1)';ct.fillRect(0,0,cv.width,cv.height);crP();for(let i=ps.length-1;i>=0;i--){ps[i].update();ps[i].draw();if(ps[i].life<=0)ps.splice(i,1)}if(act){ct.beginPath();ct.arc(mx,my,20,0,Math.PI*2);ct.strokeStyle='rgba(107,159,107,0.5)';ct.lineWidth=2;ct.stroke();ct.beginPath();ct.arc(mx,my,10,0,Math.PI*2);ct.fillStyle='rgba(107,159,107,0.3)';ct.fill()}requestAnimationFrame(ani)}ani()}
+
+function initScrollAnimations(){const obs=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('animated')}})},{threshold:0.1,rootMargin:'0px 0px -50px 0px'});document.querySelectorAll('.animate-on-scroll,.slide-in-left,.slide-in-right,.scale-in,.rotate-in,.flip-in').forEach(el=>obs.observe(el))}
+
+rF();
+setTimeout(()=>{if(document.querySelector('.tab[data-tab="info"]').classList.contains('active')){initScrollAnimations()}},500);
+</script>
 </body>
 </html>
