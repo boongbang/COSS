@@ -3,325 +3,348 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>?�?�보??- ?�마???�통</title>
-    <link rel="stylesheet" href="/css/Style.css">
+    <title>대시보드 - 스마트 약통</title>
+    <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/config/dashboard.css">
-    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
     <div class="dashboard-container">
-        <!-- ?�이?�바 -->
+        <!-- 사이드바 -->
         <aside class="sidebar">
             <div class="sidebar-header">
-                <h2>?�� ?�마???�통</h2>
-                <p class="user-name" id="userName">?�영?�니??/p>
+                <h2>💊 스마트 약통</h2>
+                <p class="user-name" id="userName">환영합니다</p>
             </div>
             
             <nav class="sidebar-nav">
                 <a href="#" class="nav-item active" data-page="overview">
-                    <span class="icon">?��</span>
-                    <span>?�?�보??/span>
+                    <span class="icon">📊</span>대시보드
                 </a>
                 <a href="#" class="nav-item" data-page="medicine">
-                    <span class="icon">?��</span>
-                    <span>??관�?/span>
+                    <span class="icon">💊</span>약품 관리
                 </a>
                 <a href="#" class="nav-item" data-page="schedule">
-                    <span class="icon">?��</span>
-                    <span>복용 ?�정</span>
+                    <span class="icon">⏰</span>복용 일정
                 </a>
                 <a href="#" class="nav-item" data-page="history">
-                    <span class="icon">?��</span>
-                    <span>복용 기록</span>
+                    <span class="icon">📝</span>복용 기록
                 </a>
                 <a href="#" class="nav-item" data-page="health">
-                    <span class="icon">?��</span>
-                    <span>건강 ?��?</span>
+                    <span class="icon">❤️</span>건강 일지
                 </a>
                 <a href="#" class="nav-item" data-page="statistics">
-                    <span class="icon">?��</span>
-                    <span>?�계 분석</span>
+                    <span class="icon">📈</span>통계 분석
                 </a>
                 <a href="#" class="nav-item" data-page="guardian">
-                    <span class="icon">?��?�👩‍�?/span>
-                    <span>보호??관�?/span>
+                    <span class="icon">👨‍👩‍👧</span>보호자 관리
                 </a>
                 <a href="#" class="nav-item" data-page="settings">
-                    <span class="icon">?�️</span>
-                    <span>?�정</span>
+                    <span class="icon">⚙️</span>설정
                 </a>
             </nav>
             
             <div class="sidebar-footer">
-                <button class="btn btn-outline" id="logoutBtn">로그?�웃</button>
+                <button class="btn btn-outline" id="logoutBtn" style="width: 100%;">
+                    로그아웃
+                </button>
             </div>
         </aside>
-        
-        <!-- 메인 콘텐�?-->
+
+        <!-- 메인 콘텐츠 -->
         <main class="main-content">
-            <!-- ?�더 -->
             <header class="content-header">
-                <h1 id="pageTitle">?�?�보??/h1>
+                <h1 id="pageTitle">대시보드</h1>
                 <div class="header-actions">
-                    <button class="btn-notification" id="notificationBtn">
-                        <span class="icon">?��</span>
-                        <span class="badge" id="notificationCount">0</span>
+                    <button class="btn-notification">
+                        🔔
+                        <span class="badge">3</span>
                     </button>
                     <span class="current-time" id="currentTime"></span>
                 </div>
             </header>
-            
-            <!-- ?�이지 콘텐�?-->
+
             <div id="pageContent">
-                <!-- ?�?�보??개요 ?�이지 -->
-                <div id="overview" class="page-section">
-                    <!-- ?�늘??복용 ?�황 -->
-                    <section class="today-status">
-                        <h2 class="section-title">?�늘??복용 ?�황</h2>
+                <!-- 대시보드 섹션 -->
+                <section id="overview" class="page-section">
+                    <!-- 오늘의 복용 현황 -->
+                    <div class="today-status mb-3">
+                        <h2 class="section-title">오늘의 복용 현황</h2>
                         <div class="stats-grid">
                             <div class="stat-card">
                                 <div class="stat-value" id="totalDoses">0</div>
-                                <div class="stat-label">?�체</div>
+                                <div class="stat-label">전체 복용</div>
                             </div>
                             <div class="stat-card success">
                                 <div class="stat-value" id="takenDoses">0</div>
-                                <div class="stat-label">복용 ?�료</div>
+                                <div class="stat-label">복용 완료</div>
                             </div>
                             <div class="stat-card warning">
                                 <div class="stat-value" id="pendingDoses">0</div>
-                                <div class="stat-label">?��?�?/div>
+                                <div class="stat-label">대기 중</div>
                             </div>
                             <div class="stat-card danger">
                                 <div class="stat-value" id="missedDoses">0</div>
-                                <div class="stat-label">?�친 복용</div>
+                                <div class="stat-label">놓침</div>
                             </div>
                         </div>
-                    </section>
-                    
-                    <!-- ?�음 복용 ?�정 -->
-                    <section class="next-dose-section card">
-                        <h2 class="card-header">?�음 복용 ?�정</h2>
+                    </div>
+
+                    <!-- 다음 복용 예정 -->
+                    <div class="mb-3">
+                        <h2 class="section-title">다음 복용 예정</h2>
                         <div id="nextDoseInfo">
                             <div class="next-dose-empty">
-                                <p>?�늘?� ???�상 복용???�이 ?�습?�다.</p>
+                                다음 복용 일정이 없습니다
                             </div>
                         </div>
-                    </section>
-                    
-                    <!-- ?�통 ?�태 -->
-                    <section class="medicine-box-section card">
-                        <h2 class="card-header">?�통 ?�태</h2>
-                        <div class="medicine-compartments" id="compartmentGrid">
+                    </div>
+
+                    <!-- 약통 상태 -->
+                    <div class="mb-3">
+                        <h2 class="section-title">약통 상태</h2>
+                        <div class="medicine-compartments">
                             <div class="compartment" data-day="1">
-                                <div class="compartment-label">??/div>
-                                <div class="compartment-info">비어?�음</div>
+                                <div class="compartment-label">월</div>
+                                <div class="compartment-info">비어있음</div>
                             </div>
                             <div class="compartment" data-day="2">
-                                <div class="compartment-label">??/div>
-                                <div class="compartment-info">비어?�음</div>
+                                <div class="compartment-label">화</div>
+                                <div class="compartment-info">비어있음</div>
                             </div>
                             <div class="compartment" data-day="3">
-                                <div class="compartment-label">??/div>
-                                <div class="compartment-info">비어?�음</div>
+                                <div class="compartment-label">수</div>
+                                <div class="compartment-info">비어있음</div>
                             </div>
                             <div class="compartment" data-day="4">
-                                <div class="compartment-label">�?/div>
-                                <div class="compartment-info">비어?�음</div>
+                                <div class="compartment-label">목</div>
+                                <div class="compartment-info">비어있음</div>
                             </div>
                             <div class="compartment" data-day="5">
-                                <div class="compartment-label">�?/div>
-                                <div class="compartment-info">비어?�음</div>
+                                <div class="compartment-label">금</div>
+                                <div class="compartment-info">비어있음</div>
                             </div>
                             <div class="compartment" data-day="6">
-                                <div class="compartment-label">??/div>
-                                <div class="compartment-info">비어?�음</div>
+                                <div class="compartment-label">토</div>
+                                <div class="compartment-info">비어있음</div>
                             </div>
                             <div class="compartment" data-day="7">
-                                <div class="compartment-label">??/div>
-                                <div class="compartment-info">비어?�음</div>
+                                <div class="compartment-label">일</div>
+                                <div class="compartment-info">비어있음</div>
                             </div>
                         </div>
-                    </section>
-                    
-                    <!-- 주간 복용�?차트 -->
-                    <section class="chart-section card">
-                        <h2 class="card-header">주간 복용�?/h2>
-                        <canvas id="weeklyChart"></canvas>
-                    </section>
-                    
+                    </div>
+
+                    <!-- 주간 복용 통계 -->
+                    <div class="mb-3">
+                        <h2 class="section-title">주간 복용 통계</h2>
+                        <div class="card">
+                            <canvas id="weeklyChart"></canvas>
+                        </div>
+                    </div>
+
                     <!-- 최근 건강 기록 -->
-                    <section class="recent-health card">
-                        <h2 class="card-header">최근 건강 기록</h2>
-                        <div id="recentHealthData">
-                            <p>?�직 기록??건강 ?�이?��? ?�습?�다.</p>
+                    <div>
+                        <h2 class="section-title">최근 건강 기록</h2>
+                        <div class="card" id="recentHealthData">
+                            <p class="empty-message">최근 건강 기록이 없습니다</p>
                         </div>
-                    </section>
-                </div>
-                
-                <!-- ??관�??�이지 -->
-                <div id="medicine" class="page-section" style="display:none;">
-                    <div class="card">
-                        <h2 class="card-header">?�품 관�?/h2>
+                    </div>
+                </section>
+
+                <!-- 약품 관리 섹션 -->
+                <section id="medicine" class="page-section" style="display: none;">
+                    <div class="flex-between mb-3">
+                        <h2 class="section-title">등록된 약품</h2>
                         <button class="btn btn-primary" id="addMedicineBtn">
-                            + ???�품 추�?
+                            + 약품 추가
                         </button>
-                        <div id="medicineList" class="medicine-list">
-                            <!-- ?�품 목록???�기???�적?�로 로드?�니??-->
-                        </div>
                     </div>
-                </div>
-                
-                <!-- 복용 ?�정 ?�이지 -->
-                <div id="schedule" class="page-section" style="display:none;">
-                    <div class="card">
-                        <h2 class="card-header">?�늘??복용 ?�정</h2>
-                        <div id="todaySchedule" class="schedule-list">
-                            <!-- ?�정???�기???�적?�로 로드?�니??-->
-                        </div>
+                    <div id="medicineList">
+                        <p class="empty-message">등록된 약품이 없습니다</p>
                     </div>
-                </div>
-                
-                <!-- 복용 기록 ?�이지 -->
-                <div id="history" class="page-section" style="display:none;">
-                    <div class="card">
-                        <h2 class="card-header">복용 기록</h2>
-                        <div class="filter-section">
-                            <input type="date" id="historyStartDate" class="form-control">
-                            <span>~</span>
-                            <input type="date" id="historyEndDate" class="form-control">
-                            <button class="btn btn-primary" id="searchHistoryBtn">조회</button>
-                            <button class="btn btn-secondary" id="exportHistoryBtn">?�보?�기</button>
-                        </div>
-                        <div id="historyList" class="history-list">
-                            <!-- 기록???�기???�적?�로 로드?�니??-->
-                        </div>
+                </section>
+
+                <!-- 복용 일정 섹션 -->
+                <section id="schedule" class="page-section" style="display: none;">
+                    <h2 class="section-title">오늘의 복용 일정</h2>
+                    <div id="todaySchedule">
+                        <p class="empty-message">오늘은 복용할 약이 없습니다</p>
                     </div>
-                </div>
-                
-                <!-- 건강 ?��? ?�이지 -->
-                <div id="health" class="page-section" style="display:none;">
-                    <div class="card">
-                        <h2 class="card-header">건강 ?��?</h2>
+                </section>
+
+                <!-- 복용 기록 섹션 -->
+                <section id="history" class="page-section" style="display: none;">
+                    <h2 class="section-title">복용 기록</h2>
+                    <div class="filter-section">
+                        <input type="date" id="historyStartDate" class="form-control">
+                        <span>~</span>
+                        <input type="date" id="historyEndDate" class="form-control">
+                        <button class="btn btn-primary" id="searchHistoryBtn">검색</button>
+                        <button class="btn btn-outline" id="exportHistoryBtn">내보내기</button>
+                    </div>
+                    <div id="historyList">
+                        <p class="empty-message">복용 기록이 없습니다</p>
+                    </div>
+                </section>
+
+                <!-- 건강 일지 섹션 -->
+                <section id="health" class="page-section" style="display: none;">
+                    <div class="flex-between mb-3">
+                        <h2 class="section-title">건강 일지</h2>
                         <button class="btn btn-primary" id="addHealthNoteBtn">
-                            + ?�늘??건강 기록?�기
+                            + 건강 기록 추가
                         </button>
-                        <div id="healthNotes" class="health-notes">
-                            <!-- 건강 ?��?가 ?�기???�적?�로 로드?�니??-->
+                    </div>
+                    <div id="healthNotes">
+                        <p class="empty-message">작성된 건강 일지가 없습니다</p>
+                    </div>
+                </section>
+
+                <!-- 통계 분석 섹션 -->
+                <section id="statistics" class="page-section" style="display: none;">
+                    <h2 class="section-title">통계 분석</h2>
+                    <div class="stats-grid">
+                        <div class="card">
+                            <h3>월별 복용률</h3>
+                            <canvas id="monthlyChart"></canvas>
+                        </div>
+                        <div class="card">
+                            <h3>약품별 복용률</h3>
+                            <canvas id="medicineChart"></canvas>
                         </div>
                     </div>
-                </div>
+                </section>
+
+                <!-- 보호자 관리 섹션 -->
+                <section id="guardian" class="page-section" style="display: none;">
+                    <h2 class="section-title">보호자 관리</h2>
+                    <div id="guardianList">
+                        <p class="empty-message">등록된 보호자가 없습니다</p>
+                    </div>
+                </section>
+
+                <!-- 설정 섹션 -->
+                <section id="settings" class="page-section" style="display: none;">
+                    <h2 class="section-title">설정</h2>
+                    <div class="card">
+                        <h3>알림 설정</h3>
+                        <p>알림 설정 기능이 준비 중입니다.</p>
+                    </div>
+                    <div class="card">
+                        <h3>약통 연결</h3>
+                        <p>약통 연결 기능이 준비 중입니다.</p>
+                    </div>
+                </section>
             </div>
         </main>
     </div>
-    
-    <!-- ?�품 추�? 모달 -->
+
+    <!-- 약품 추가 모달 -->
     <div id="medicineModal" class="modal">
         <div class="modal-content">
-            <span class="modal-close">&times;</span>
-            <h2 class="modal-header">?�품 추�?</h2>
-            <form id="medicineForm">
-                <div class="form-group">
-                    <label class="form-label">?�품�?/label>
-                    <input type="text" class="form-control" id="medicineName" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">�?번호 (1-7)</label>
-                    <select class="form-control" id="compartmentNo" required>
-                        <option value="">?�택?�세??/option>
-                        <option value="1">1�?(??</option>
-                        <option value="2">2�?(??</option>
-                        <option value="3">3�?(??</option>
-                        <option value="4">4�?(�?</option>
-                        <option value="5">5�?(�?</option>
-                        <option value="6">6�?(??</option>
-                        <option value="7">7�?(??</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">?�품 ?�형</label>
-                    <select class="form-control" id="medicineType">
-                        <option value="prescription">처방??/option>
-                        <option value="otc">?�반??/option>
-                        <option value="vitamin">비�?�?/option>
-                        <option value="supplement">?�양??/option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">복용??/label>
-                    <input type="text" class="form-control" id="dosage" placeholder="?? 1??>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">복용 ?�간</label>
-                    <div id="timeSlots">
-                        <input type="time" class="form-control time-slot" value="09:00">
+            <div class="modal-header">
+                약품 추가
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="medicineForm">
+                    <div class="form-group">
+                        <label class="form-label">약품명</label>
+                        <input type="text" id="medicineName" class="form-control" required>
                     </div>
-                    <button type="button" class="btn btn-secondary" id="addTimeSlot">+ ?�간 추�?</button>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">?�작??/label>
-                    <input type="date" class="form-control" id="startDate" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">종료??/label>
-                    <input type="date" class="form-control" id="endDate">
-                </div>
-                <div class="modal-actions">
-                    <button type="submit" class="btn btn-primary">?�??/button>
-                    <button type="button" class="btn btn-outline" id="cancelMedicineBtn">취소</button>
-                </div>
-            </form>
+                    <div class="form-group">
+                        <label class="form-label">약품 유형</label>
+                        <select id="medicineType" class="form-control">
+                            <option value="prescription">처방약</option>
+                            <option value="otc">일반약</option>
+                            <option value="vitamin">비타민</option>
+                            <option value="supplement">영양제</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">칸 번호 (1-7)</label>
+                        <input type="number" id="compartmentNo" class="form-control" min="1" max="7" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">용량</label>
+                        <input type="text" id="dosage" class="form-control" placeholder="예: 1정">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">복용 시간</label>
+                        <div id="timeSlots">
+                            <input type="time" class="form-control time-slot mb-1">
+                        </div>
+                        <button type="button" class="btn btn-outline" id="addTimeSlot">+ 시간 추가</button>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">시작일</label>
+                        <input type="date" id="startDate" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">종료일</label>
+                        <input type="date" id="endDate" class="form-control">
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-outline" id="cancelMedicineBtn">취소</button>
+                        <button type="submit" class="btn btn-primary">저장</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-    
+
     <!-- 건강 기록 모달 -->
     <div id="healthModal" class="modal">
         <div class="modal-content">
-            <span class="modal-close">&times;</span>
-            <h2 class="modal-header">건강 기록</h2>
-            <form id="healthForm">
-                <div class="form-group">
-                    <label class="form-label">?�압 (?�축�??�완�?</label>
-                    <div style="display: flex; gap: 10px;">
-                        <input type="number" class="form-control" id="bpSys" placeholder="120">
-                        <span style="padding: 15px;">/</span>
-                        <input type="number" class="form-control" id="bpDia" placeholder="80">
+            <div class="modal-header">
+                건강 기록 추가
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="healthForm">
+                    <div class="form-group">
+                        <label class="form-label">혈압 (수축기/이완기)</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="number" id="bpSys" class="form-control" placeholder="120">
+                            <span>/</span>
+                            <input type="number" id="bpDia" class="form-control" placeholder="80">
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">?�당 (mg/dL)</label>
-                    <input type="number" class="form-control" id="bloodSugar" placeholder="100">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">체중 (kg)</label>
-                    <input type="number" step="0.1" class="form-control" id="weight" placeholder="65.5">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">?�늘??기분</label>
-                    <select class="form-control" id="mood">
-                        <option value="">?�택?�세??/option>
-                        <option value="very_good">매우 좋음</option>
-                        <option value="good">좋음</option>
-                        <option value="normal">보통</option>
-                        <option value="bad">?�쁨</option>
-                        <option value="very_bad">매우 ?�쁨</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">증상</label>
-                    <textarea class="form-control" id="symptoms" rows="3" 
-                              placeholder="?�늘 ?��? 증상???�어주세??></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">메모</label>
-                    <textarea class="form-control" id="healthNotes" rows="3"
-                              placeholder="추�?�?기록?�고 ?��? ?�용"></textarea>
-                </div>
-                <div class="modal-actions">
-                    <button type="submit" class="btn btn-primary">?�??/button>
-                    <button type="button" class="btn btn-outline" id="cancelHealthBtn">취소</button>
-                </div>
-            </form>
+                    <div class="form-group">
+                        <label class="form-label">혈당 (mg/dL)</label>
+                        <input type="number" id="bloodSugar" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">체중 (kg)</label>
+                        <input type="number" step="0.1" id="weight" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">기분</label>
+                        <select id="mood" class="form-control">
+                            <option value="">선택하세요</option>
+                            <option value="very_good">😊 매우 좋음</option>
+                            <option value="good">🙂 좋음</option>
+                            <option value="normal">😐 보통</option>
+                            <option value="bad">😕 나쁨</option>
+                            <option value="very_bad">😞 매우 나쁨</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">증상</label>
+                        <textarea id="symptoms" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">메모</label>
+                        <textarea id="healthNotes" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-outline" id="cancelHealthBtn">취소</button>
+                        <button type="submit" class="btn btn-primary">저장</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 

@@ -586,7 +586,7 @@
                         <button type="button" class="btn-prev" onclick="prevStep()">
                             이전
                         </button>
-                        <button type="submit" class="btn-register">
+                        <button type="button" class="btn-register" onclick="submitRegister()">
                             가입 완료
                         </button>
                     </div>
@@ -672,6 +672,15 @@
                 return true;
             }
 
+            if (step === 3) {
+                if (!document.getElementById('agreeTerms').checked || 
+                    !document.getElementById('agreePrivacy').checked) {
+                    showError('generalError', '필수 약관에 동의해주세요.');
+                    return false;
+                }
+                return true;
+            }
+
             return true;
         }
 
@@ -696,13 +705,10 @@
             document.getElementById('agreeMarketing').checked = checkAll;
         }
 
-        // 회원가입 폼 제출
-        document.getElementById('registerForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            if (!document.getElementById('agreeTerms').checked || 
-                !document.getElementById('agreePrivacy').checked) {
-                showError('generalError', '필수 약관에 동의해주세요.');
+        // 회원가입 제출 함수 - 개선된 버전
+        async function submitRegister() {
+            // Step 3 유효성 검사
+            if (!validateStep(3)) {
                 return;
             }
 
@@ -730,6 +736,12 @@
             } catch (error) {
                 showError('generalError', error.message || '회원가입에 실패했습니다.');
             }
+        }
+
+        // 기존 폼 제출 이벤트 리스너는 제거하고 버튼 클릭으로만 처리
+        document.getElementById('registerForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            // 폼 제출 방지
         });
     </script>
 </body>
